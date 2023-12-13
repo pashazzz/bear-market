@@ -1,10 +1,13 @@
 import './App.css'
+import Header from './components/Header'
+import MainView from './views/MainView'
 
 function App() {
 
   return (
     <>
-      <h1>Bear Market</h1>
+      <Header />
+      <MainView />
     </>
   )
 }
