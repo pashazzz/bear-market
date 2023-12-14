@@ -9,12 +9,12 @@
   position: relative;
 }
 
-.main-container .main-image h1{
+.main-container .main-image h1 {
   margin-top: 10%;
   margin-left: 8%;
   text-shadow: 6px 6px 6px black;
 }
-.main-container .main-image h2{
+.main-container .main-image h2 {
   margin-left: 8%;
   text-shadow: 4px 4px 4px black;
 }
@@ -45,5 +45,17 @@
     height: 220px;
     top: 30%;
     right: 20%;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .main-container .main-image {
+    background: url('/leaves.jpg'), lightcyan;
+    background-blend-mode: multiply;
+    background-position: 50% 50%;
+    background-size: cover;
+  }
+  .main-container .main-image h1, .main-container .main-image h2 {
+    color: #898121;
   }
 }

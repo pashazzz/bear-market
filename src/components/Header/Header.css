@@ -44,3 +44,9 @@
     margin-right: 2rem;
   }
 }
+
+@media (prefers-color-scheme: light) {
+  .header-container {
+    background-image: linear-gradient(to right, #898121, #E7B10A, #F7F1E5);
+  }
+}
