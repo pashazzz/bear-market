@@ -10,10 +10,15 @@
 - ? Send request to mage.space or other free ai image generator with api or cheap OpenAI
   - On pending can be no more than 3 bears (or can be changed by admin)
 - Available period of sale
-- Additional accessories
+- Additional accessories, icons on the corners (0 - 2 credits)
 ## Bear page
+### for all
+- give bet for bear card
+- start conversation with owner
+### for owner/admin
 - Adding discounts
-- Put it on sale
+- Put it on sale with the common price (between 4 to 10 credits)
+- The bear image in original size (access to file only for owner)
 ## Admin side features
 - Admin can accept or decline the new bear from user
 
@@ -23,5 +28,6 @@
 - Sqlite
 
 ## TODO
-- Create dump cards for main page and diplay them
+- Create dump cards for main page and display them
 - Create authorization mechanism
+- Create Bear page
