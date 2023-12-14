@@ -1,15 +1,8 @@
+import IBearEntity from '../../../interfaces/IBearEntity'
 import './BearCard.css'
 
 interface IBearCard {
-  bearInfo: {
-    id: number,
-    title: string,
-    description?: string,
-    imgUrl: string,
-    owner: number,
-    price?: number,
-    createdAt: string,
-  }
+  bearInfo: IBearEntity
 }
 
 const thumbsDir = '/src/assets/thumbs/'
