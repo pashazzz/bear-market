@@ -28,6 +28,5 @@
 - Sqlite
 
 ## TODO
-- Create dump cards for main page and display them
 - Create authorization mechanism
 - Create Bear page
