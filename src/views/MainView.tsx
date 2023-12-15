@@ -1,8 +1,20 @@
-import { bearCollection } from '../models/storage'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+import IBearEntity from '../../interfaces/IBearEntity'
 import { BearCard } from '../components/BearCard'
 import './MainView.css'
 
 function MainView() {
+  const [bears, setBears] = useState<IBearEntity[]>([])
+  
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_SERVER_BASE}/bears`)
+      .then((res) => {
+        setBears(res.data)
+      })
+      .catch((e) => console.log(e))
+  }, [])
 
   return (
     <div className="main-container">
@@ -13,7 +25,7 @@ function MainView() {
       </div>
       <main>
         <div className='main-bears-collection'>
-          {bearCollection.map(bear => (<BearCard bearInfo={bear} key={bear.id}/>))}
+          {bears.map(bear => (<BearCard bearInfo={bear} key={bear.id}/>))}
         </div>
       </main>
     </div>
