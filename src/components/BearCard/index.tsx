@@ -5,7 +5,7 @@ interface IBearCard {
   bearInfo: IBearEntity
 }
 
-const thumbsDir = '/src/assets/thumbs/'
+const thumbsDir = import.meta.env.VITE_THUMBS_DIR
 
 export const BearCard = ({bearInfo}: IBearCard) => {
   const bearImgUrl = thumbsDir + bearInfo.imgUrl

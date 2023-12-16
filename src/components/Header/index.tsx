@@ -1,3 +1,4 @@
+import logo from '/logo.png'
 import './Header.css'
 
 function Header() {
@@ -5,11 +6,13 @@ function Header() {
     <div className='header-container'>
       <div className='header'>
         <a href='/' className='header-logo'>
-          <img src='/logo.png' alt="Logo"/>
+          <img src={logo} alt="Logo"/>
         </a>
         <input type="text" className='header-search' placeholder='Search'/>
         <div className='header-login-container'>
-          <span className='header-login'>Log in</span> / <span className='header-register'>Register</span>
+          <span className='header-login'>Log in</span>
+          {' / '}
+          <span className='header-register'>Register</span>
         </div>
       </div>
     </div>
