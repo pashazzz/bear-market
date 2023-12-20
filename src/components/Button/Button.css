@@ -1,4 +1,6 @@
-.button-wrapper {}
+.button-wrapper button {
+  color: #CC9544;
+}
 
 .button-small {
   padding: 0.25em 0.65em;
@@ -11,4 +13,10 @@
 .button-large {
   padding: 0.8em 2em;
   font-size: 1.35em;
+}
+
+@media (prefers-color-scheme: light) {
+  .button-wrapper button {
+    color: #213547;
+  }
 }
