@@ -1,13 +1,14 @@
 import './App.css'
 import Header from './components/Header'
 import MainView from './views/MainView'
+import Popups from './components/Popups'
 
 function App() {
-
   return (
     <>
       <Header />
       <MainView />
+      <Popups />
     </>
   )
 }

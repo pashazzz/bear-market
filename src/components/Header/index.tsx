@@ -1,18 +1,40 @@
+import { useDispatch } from 'react-redux'
+import { useState } from 'react'
 import logo from '/logo.png'
 import './Header.css'
+import Input from '../Input'
+import Button, { ButtonSizes } from '../Button'
 
-function Header() {
+const Header = () => {
+  const dispatch = useDispatch()
+  const [searchVal, setSearchVal] = useState('')
+
+  const onClickLogin = () => {
+    dispatch({type: "SHOW_LOGIN_FORM", payload: true})
+  }
+  const onClickRegister = () => {
+    dispatch({type: "SHOW_REGISTRATION_FORM", payload: true})
+  }
+
   return (
     <div className='header-container'>
       <div className='header'>
         <a href='/' className='header-logo'>
           <img src={logo} alt="Logo"/>
         </a>
-        <input type="text" className='header-search' placeholder='Search'/>
+        <div className='header-search'>
+          <Input
+            type="text"
+            placeholder='Search'
+            value={searchVal}
+            setValue={setSearchVal}
+          />
+          <Button text='Search' onClick={() => {}} size={ButtonSizes.SMALL}/>
+        </div>
         <div className='header-login-container'>
-          <span className='header-login'>Log in</span>
+          <span className='header-login' onClick={onClickLogin}>Log in</span>
           {' / '}
-          <span className='header-register'>Register</span>
+          <span className='header-register' onClick={onClickRegister}>Register</span>
         </div>
       </div>
     </div>

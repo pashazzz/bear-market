@@ -24,11 +24,11 @@
 }
 
 .header .header-search {
-  height: 1.5rem;
   min-width: 160px;
   max-width: 320px;
   width: 33%;
-  border-radius: 4px;
+  display: flex;
+  align-items: center;
 }
 
 .header .header-login-container {
