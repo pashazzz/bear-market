@@ -1,0 +1,14 @@
+.input-wrapper {
+  margin: 8px auto;
+}
+
+.input-title {
+  font-size: 0.8rem;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 0.4rem;
+  border-radius: 8px;
+  font-size: large;
+}
