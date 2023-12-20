@@ -1,0 +1,14 @@
+.button-wrapper {}
+
+.button-small {
+  padding: 0.25em 0.65em;
+  font-size: 0.8em;
+}
+.button-normal {
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+}
+.button-large {
+  padding: 0.8em 2em;
+  font-size: 1.35em;
+}
