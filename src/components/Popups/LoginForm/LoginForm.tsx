@@ -15,12 +15,14 @@ const LoginForm = () => {
 
   const formHandler = (e: SyntheticEvent) => {
     e.preventDefault()
-    loginSender()
   }
   const loginSender = () => {
     axios.post(`${import.meta.env.VITE_SERVER_BASE}/users/login`, {login, password})
       .then(response => {
-        console.log(response.data)
+        localStorage.setItem('user', response.data.user)
+        localStorage.setItem('token', response.data.jwtoken.token)
+        localStorage.setItem('expires', response.data.jwtoken.expires)
+
         dispatch({type: "SHOW_LOGIN_FORM", payload: false})
     
         setLogin('')
