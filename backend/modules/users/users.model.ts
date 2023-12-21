@@ -1,4 +1,4 @@
-import { IUserEntity, IUserPublicFields, HiddenFields } from "../../interfaces/IUserEntity";
+import { IUserEntity, IUserPublicFields, HiddenFields } from "../../../interfaces/IUserEntity";
 
 const dumpUsers: IUserEntity[] = [
   {

@@ -1,9 +1,9 @@
 import { createHash } from 'crypto'
 import express, { Request, Response } from 'express'
 
-import UsersMiddleware from '../middlewares/users.middleware'
-import {IUserPublicFields} from '../../interfaces/IUserEntity'
-import UsersModel from '../models/users'
+import UsersMiddleware from './users.middleware'
+import UsersModel from './users.model'
+import {IUserPublicFields} from '../../../interfaces/IUserEntity'
 
 const router = express.Router()
 

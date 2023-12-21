@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 
-import IBearEntity from '../../interfaces/IBearEntity'
-import BearsModel from '../models/bears'
+import IBearEntity from '../../../interfaces/IBearEntity'
+import BearsModel from './bears.model'
 
 const router = express.Router()
 

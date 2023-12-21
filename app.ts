@@ -1,6 +1,6 @@
 import express, { Express, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
-import BearsController from './backend/controllers/bears'
-import UsersController from './backend/controllers/users'
+import BearsController from './backend/modules/bears/bears.controller'
+import UsersController from './backend/modules/users/users.controller'
 
 const app: Express = express()
 

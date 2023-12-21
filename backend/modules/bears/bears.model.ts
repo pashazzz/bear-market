@@ -1,4 +1,4 @@
-import IBearEntity from "../../interfaces/IBearEntity"
+import IBearEntity from "../../../interfaces/IBearEntity"
 
 const dumpBears: IBearEntity[] = [
   {
