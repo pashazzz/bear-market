@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 import IBearEntity from '../../interfaces/IBearEntity'
-import { BearCard } from '../components/BearCard'
+import BearCard from '../components/BearCard'
 import './MainView.css'
 
 function MainView() {
