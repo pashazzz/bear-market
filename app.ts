@@ -2,6 +2,11 @@ import express, { Express, Request, Response, NextFunction, ErrorRequestHandler 
 import BearsController from './backend/modules/bears/bears.controller'
 import UsersController from './backend/modules/users/users.controller'
 
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 const app: Express = express()
 
 app.use(express.json()) // for json responses
@@ -36,9 +41,10 @@ app.use('/api/bears', BearsController)
 app.use('/api/users', UsersController)
 // 
 
+app.use(express.static('dist')) // static asserts from /build
 // wildcard for not handled requests
 app.all('*', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server');
+  return res.sendFile(path.join(__dirname + '/dist/index.html'))
 });
 
 // error handler
