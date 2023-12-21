@@ -18,8 +18,9 @@ router.post('/login',
       return res.status(401).json({error: "Wrong credentials"})
     }
     const user = UsersService.sanitizeUserEntity(userEntity)
+    const jwtoken = UsersService.issueJWT(userEntity)
 
-    res.status(200).json(user)
+    res.status(200).json({user, jwtoken})
   })
 
 export default router

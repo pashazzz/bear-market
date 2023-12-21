@@ -3,6 +3,7 @@ export interface IUserPublicFields {
   firstName?: string,
   lastName?: string,
   email: string,
+  roles: string[],
 }
 
 export interface IUserEntity extends IUserPublicFields {

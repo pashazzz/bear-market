@@ -1,5 +1,11 @@
 # Bear Market
 
+## Before run you should
+- install Typescript
+- run `npx tsx backend/utils/generateKeyPair.ts` - generate crypto keys for check JWT
+
+------
+
 ## Home
 - Most recent bears
 - Grouped by some criteria

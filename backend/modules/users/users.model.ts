@@ -9,16 +9,18 @@ const dumpUsers: IUserEntity[] = [
     username: 'admin',
     salt: 'hwe945kl;12.q2d',
     passwordHash: 'a7ad67772a24800eef009d69478931836915394375ebe7e1ab9f437f4f10059158b2bbff893979fe7dcdf9edad4470d67bc4c50f95777c9d74f9cad2dd011f64',
-    createdAt: '2023-11-30T08:00:00Z',
     email: 'pmalyshkin@gmail.com',
+    roles: ['admin'],
+    createdAt: '2023-11-30T08:00:00Z',
   }, {
     // password: "guest123"
     id: 1,
     username: 'guest',
     salt: 'njib783]1mj09,/',
     passwordHash: 'b4bab4b4a1ebb98c087e03f8b9d5a8745c559cb5a2e0f7b8fadfe2f58631f09b3449259126695beace607ddbee1314bddc6bf8bb1974ae3622f355910e0a1b13',
-    createdAt: '2023-11-30T09:00:00Z',
     email: 'guest@bearmarket.com',
+    roles: ['customer'],
+    createdAt: '2023-11-30T09:00:00Z',
   }, {
     // password: "aurelius"
     id: 2,
@@ -27,8 +29,9 @@ const dumpUsers: IUserEntity[] = [
     lastName: 'Aurelius',
     salt: 'n qa2`1;kf7))d2',
     passwordHash: 'f80376fc87147286db3e840904496dee541243c7bb78d057305b38569757e09dd41dde5a70d594cd2f42d14a573c5f18cb0e7069de6082f7b5128a429d504d07',
-    createdAt: '2023-12-1T08:00:00Z',
     email: 'marc@bearmarket.com',
+    roles: ['customer'],
+    createdAt: '2023-12-1T08:00:00Z',
   }
   
 ]
