@@ -1,7 +1,9 @@
+import axios from 'axios'
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+
 import Button from "../Button"
 import Input from "../Input"
-import { useDispatch } from "react-redux"
 
 const LoginForm = () => {
   const [login, setLogin] = useState('')
@@ -10,21 +12,25 @@ const LoginForm = () => {
   const dispatch = useDispatch()
 
   const loginSender = () => {
+    axios.post(`${import.meta.env.VITE_SERVER_BASE}/users/login`, {login, password})
+      .then((response) => {
+        console.log(response.data)
+      })
     dispatch({type: "SHOW_LOGIN_FORM", payload: false})
 
-    console.log(login, password)
     setLogin('')
     setPassword('')
   }
 
   return (
-    <div>
+    <form onSubmit={loginSender}>
       <Input
         type="text"
         title="Username"
         placeholder="Username"
         value={login}
         setValue={setLogin}
+        isFocused={true}
       />
       <Input
         type="password"
@@ -38,7 +44,7 @@ const LoginForm = () => {
         <Button text="Login" onClick={loginSender} />
       </div>
 
-    </div>
+    </form>
   )
 }
 

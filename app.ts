@@ -1,5 +1,6 @@
 import express, { Express, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
 import BearsController from './backend/controllers/bears'
+import UsersController from './backend/controllers/users'
 
 const app: Express = express()
 
@@ -29,7 +30,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 })
 // /Enabling CORS middleware
 
+//
+// Controllers
 app.use('/api/bears', BearsController)
+app.use('/api/users', UsersController)
+// 
 
 // wildcard for not handled requests
 app.all('*', (req: Request, res: Response) => {
@@ -37,10 +42,11 @@ app.all('*', (req: Request, res: Response) => {
 });
 
 // error handler
-app.use((err: ErrorRequestHandler, req: Request, res: Response) => {
+app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
   console.log(err)
   res.status(500)
      .json({ msg: 'Something went wrong', error: err })
+  next()
 })
 
 export default app
