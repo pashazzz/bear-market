@@ -1,55 +1,54 @@
-import { IUserEntity, IUserPublicFields, HiddenFields } from "../../../interfaces/IUserEntity";
+import { createHash } from 'crypto'
+
+import { IUserEntity } from "../../../interfaces/IUserEntity";
 
 const dumpUsers: IUserEntity[] = [
   {
     // password: "123nimda123!"
     id: 0,
     username: 'admin',
-    passwordHash: '031cc5f9cb4ad331cc05ec8126d508a2e51707d4c8a9e0caa95f124dd1f9a453a36c0264de0d87659b3c049db6f366597da870bc70f861503e2f34715c243239',
+    salt: 'hwe945kl;12.q2d',
+    passwordHash: 'a7ad67772a24800eef009d69478931836915394375ebe7e1ab9f437f4f10059158b2bbff893979fe7dcdf9edad4470d67bc4c50f95777c9d74f9cad2dd011f64',
     createdAt: '2023-11-30T08:00:00Z',
+    email: 'pmalyshkin@gmail.com',
   }, {
     // password: "guest123"
     id: 1,
     username: 'guest',
-    passwordHash: 'b9e058cfa995fe149f444535ac5055172e7801cccc1a2573555833c702ceea5a099cc3038cc1e1eb4151b895c4b7576b197cc7df9ad156687573a3b39e4b5d00',
+    salt: 'njib783]1mj09,/',
+    passwordHash: 'b4bab4b4a1ebb98c087e03f8b9d5a8745c559cb5a2e0f7b8fadfe2f58631f09b3449259126695beace607ddbee1314bddc6bf8bb1974ae3622f355910e0a1b13',
     createdAt: '2023-11-30T09:00:00Z',
+    email: 'guest@bearmarket.com',
   }, {
     // password: "aurelius"
     id: 2,
     username: 'marcus',
     firstName: 'Marcus',
     lastName: 'Aurelius',
-    passwordHash: 'cc23f2f352bcc3c3ebb68a7221eaa309072c4b57e5e805681ab1e6630dbe0e6606790356232dc3e0439c80d356bf7f0b2ea647b470c20403e03054b583bb94c4',
+    salt: 'n qa2`1;kf7))d2',
+    passwordHash: 'f80376fc87147286db3e840904496dee541243c7bb78d057305b38569757e09dd41dde5a70d594cd2f42d14a573c5f18cb0e7069de6082f7b5128a429d504d07',
     createdAt: '2023-12-1T08:00:00Z',
+    email: 'marc@bearmarket.com',
   }
   
 ]
 
-interface UsernameAndHash {
-  username: string
-  hash: string
+function findUserByUsername(username: string): IUserEntity | undefined {
+  return dumpUsers.find(user => user.username === username)
 }
 
-function sanitizeUserEntity(user: IUserEntity): IUserPublicFields {
-  for (const field in HiddenFields) {
-    if (isNaN(Number(field))) {
-      delete user[field]
-    }
-  }
-  
-  return user as IUserPublicFields
+function checkUserPassword(user: IUserEntity, password: string): boolean {
+  const strForHash: string = user.username + password + user.salt + process?.env?.SALT_FOR_HASH
+
+  const hashFunc = createHash('SHA3-512')
+  hashFunc.update(strForHash)
+  const hash = hashFunc.digest('hex')
+
+  return hash === user.passwordHash
 }
 
-function findUserByUsernameAndHash({username, hash}: UsernameAndHash): IUserPublicFields | null {
-  const foundUsers = dumpUsers.filter(user => user.username === username && user.passwordHash === hash)
-  if (foundUsers.length === 0) {
-    return null
-  }
-
-  return sanitizeUserEntity(foundUsers[0])
-}
 
 export default {
-  dumpUsers,
-  findUserByUsernameAndHash,
+  findUserByUsername,
+  checkUserPassword,
 }
