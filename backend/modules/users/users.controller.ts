@@ -1,5 +1,5 @@
-
 import express, { Request, Response } from 'express'
+import _ from 'lodash'
 
 import UsersMiddleware from './users.middleware'
 import UsersModel from './users.model'
@@ -17,8 +17,8 @@ router.post('/login',
     if (UsersModel.checkUserPassword(userEntity, req.body.password) === false) {
       return res.status(401).json({error: {issue: "Wrong credentials"}})
     }
-    const user = UsersService.sanitizeUserEntity(userEntity)
     const jwtoken = UsersService.issueJWT(userEntity)
+    const user = UsersService.sanitizeUserEntity(_.clone(userEntity))
 
     res.status(200).json({user, jwtoken})
   })
