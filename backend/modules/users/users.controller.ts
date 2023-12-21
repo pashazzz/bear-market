@@ -12,10 +12,10 @@ router.post('/login',
   (req: Request, res: Response) => {
     const userEntity = UsersModel.findUserByUsername(req.body.login)
     if (userEntity === undefined) {
-      return res.status(401).json({error: "Wrong credentials"})
+      return res.status(401).json({error: {issue: "Wrong credentials"}})
     }
     if (UsersModel.checkUserPassword(userEntity, req.body.password) === false) {
-      return res.status(401).json({error: "Wrong credentials"})
+      return res.status(401).json({error: {issue: "Wrong credentials"}})
     }
     const user = UsersService.sanitizeUserEntity(userEntity)
     const jwtoken = UsersService.issueJWT(userEntity)
