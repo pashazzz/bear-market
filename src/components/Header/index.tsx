@@ -2,8 +2,8 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import logo from '/logo.png'
 import './Header.css'
-import Input from '../Input'
-import Button, { ButtonSizes } from '../Button'
+import Input from '../Base/Input'
+import Button, { ButtonSizes } from '../Base/Button'
 
 const Header = () => {
   const dispatch = useDispatch()

@@ -2,8 +2,8 @@ import axios from 'axios'
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 
-import Button from "../Button"
-import Input from "../Input"
+import Button from "../../Base/Button"
+import Input from "../../Base/Input"
 
 const LoginForm = () => {
   const [login, setLogin] = useState('')
