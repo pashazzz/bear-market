@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express'
+import passport from 'passport'
 import _ from 'lodash'
 
 import UsersMiddleware from './users.middleware'
@@ -21,6 +22,14 @@ router.post('/login',
     const user = UsersService.sanitizeUserEntity(_.clone(userEntity))
 
     res.status(200).json({user, jwtoken})
-  })
+  }
+)
+
+router.all('/test',
+  passport.authenticate('jwt', {session: false}),
+  (req: Request, res: Response) => {
+    res.status(200).json({test: 'ok'})
+  }
+)
 
 export default router

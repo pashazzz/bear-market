@@ -8,7 +8,7 @@ const dumpUsers: IUserEntity[] = [
     id: 0,
     username: 'admin',
     salt: 'hwe945kl;12.q2d',
-    passwordHash: 'a7ad67772a24800eef009d69478931836915394375ebe7e1ab9f437f4f10059158b2bbff893979fe7dcdf9edad4470d67bc4c50f95777c9d74f9cad2dd011f64',
+    passwordHash: '9c7a7495bda6a72018269ea4b976b3cf7b09e97ec24a1b03ce92e4518df5fc7207bbe6ce5dc46711a38e48593f477773176aaff8fd27f2938185ffb09e261501',
     email: 'pmalyshkin@gmail.com',
     roles: ['admin'],
     createdAt: '2023-11-30T08:00:00Z',
@@ -17,7 +17,7 @@ const dumpUsers: IUserEntity[] = [
     id: 1,
     username: 'guest',
     salt: 'njib783]1mj09,/',
-    passwordHash: 'b4bab4b4a1ebb98c087e03f8b9d5a8745c559cb5a2e0f7b8fadfe2f58631f09b3449259126695beace607ddbee1314bddc6bf8bb1974ae3622f355910e0a1b13',
+    passwordHash: 'bb56bb57ea1e6736b671cbea4d7a63495c1a800e60e0c1fda8e5e05d6dfe8b592c9d4194479cc10da07ef7a64d28dd424f4ba206e403d2e5de0223abfc0c46d4',
     email: 'guest@bearmarket.com',
     roles: ['customer'],
     createdAt: '2023-11-30T09:00:00Z',
@@ -28,7 +28,7 @@ const dumpUsers: IUserEntity[] = [
     firstName: 'Marcus',
     lastName: 'Aurelius',
     salt: 'n qa2`1;kf7))d2',
-    passwordHash: 'f80376fc87147286db3e840904496dee541243c7bb78d057305b38569757e09dd41dde5a70d594cd2f42d14a573c5f18cb0e7069de6082f7b5128a429d504d07',
+    passwordHash: 'fb400a2761868e17466d333dbafa6dbc0c01711ae15e5b8e82d8a4dd4d333bdec78c671c1e4f4e5e5d6914f6c03456b9f4bd297ad2a8a578a1081e14fd4e6aef',
     email: 'marc@bearmarket.com',
     roles: ['customer'],
     createdAt: '2023-12-1T08:00:00Z',
@@ -36,12 +36,16 @@ const dumpUsers: IUserEntity[] = [
   
 ]
 
+function findUserById(id: number): IUserEntity | undefined {
+  return dumpUsers.find(user => user.id === id)
+}
+
 function findUserByUsername(username: string): IUserEntity | undefined {
   return dumpUsers.find(user => user.username === username)
 }
 
 function checkUserPassword(user: IUserEntity, password: string): boolean {
-  const strForHash: string = user.username + password + user.salt + process?.env?.SALT_FOR_HASH
+  const strForHash: string = user.createdAt + password + user.salt + process?.env?.SALT_FOR_HASH
 
   const hashFunc = createHash('SHA3-512')
   hashFunc.update(strForHash)
@@ -52,6 +56,7 @@ function checkUserPassword(user: IUserEntity, password: string): boolean {
 
 
 export default {
+  findUserById,
   findUserByUsername,
   checkUserPassword,
 }

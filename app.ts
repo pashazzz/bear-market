@@ -1,9 +1,14 @@
+import cors from 'cors'
 import express, { Express, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
-import BearsController from './backend/modules/bears/bears.controller'
-import UsersController from './backend/modules/users/users.controller'
+import passport from 'passport'
 
 import path from 'path'
 import { fileURLToPath } from 'url'
+
+import BearsController from './backend/modules/bears/bears.controller'
+import UsersController from './backend/modules/users/users.controller'
+
+import passportInit from './backend/services/passport'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -11,29 +16,10 @@ const app: Express = express()
 
 app.use(express.json()) // for json responses
 app.use(express.urlencoded({ extended: true })) // for form requests
+app.use(cors())
 
-// Enabling CORS middleware
-app.use((req: Request, res: Response, next: NextFunction) => {
-  // Website you wish to allow to connect; instead of '*', use more generic
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    req.header('origin') ||
-      req.header('x-forwarded-host') ||
-      req.header('referer') ||
-      req.header('host') || ''
-  )
-
-  res.setHeader('Access-Control-Allow-Methods', 'POST,DELETE,OPTIONS') // Request methods you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With,content-type,Authorization'
-  ) // Request headers you wish to allow
-
-  // Set to true if you need the website to include cookies in the requests sent to the API (e.g. in case you use sessions)
-  // res.setHeader('Access-Control-Allow-Credentials', true);
-  next()
-})
-// /Enabling CORS middleware
+passportInit(passport)
+app.use(passport.initialize())
 
 //
 // Controllers
