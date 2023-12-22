@@ -1,6 +1,7 @@
-import axios from 'axios'
 import { useState, SyntheticEvent } from "react"
 import { useDispatch } from "react-redux"
+
+import { postRequest } from '../../../helpers/backendRequsts'
 
 import Button from "../../Base/Button"
 import Input from "../../Base/Input"
@@ -17,11 +18,11 @@ const LoginForm = () => {
     e.preventDefault()
   }
   const loginSender = () => {
-    axios.post(`${import.meta.env.VITE_SERVER_BASE}/users/login`, {login, password})
-      .then(response => {
-        localStorage.setItem('user', response.data.user)
-        localStorage.setItem('token', response.data.jwtoken.token)
-        localStorage.setItem('expires', response.data.jwtoken.expires)
+    postRequest('/users/login', {login, password})
+      .then(res => {
+        localStorage.setItem('user', res.user)
+        localStorage.setItem('token', res.jwtoken.token)
+        localStorage.setItem('expires', res.jwtoken.expires)
 
         dispatch({type: "SHOW_LOGIN_FORM", payload: false})
     
