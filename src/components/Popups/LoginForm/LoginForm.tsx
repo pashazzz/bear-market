@@ -20,7 +20,7 @@ const LoginForm = () => {
   const loginSender = () => {
     postRequest('/users/login', {login, password})
       .then(res => {
-        localStorage.setItem('user', res.user)
+        localStorage.setItem('user', JSON.stringify(res.user))
         localStorage.setItem('token', res.jwtoken.token)
         localStorage.setItem('expires', res.jwtoken.expires)
 
