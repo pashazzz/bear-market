@@ -1,12 +1,17 @@
-import { useDispatch } from 'react-redux'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import logo from '/logo.png'
 import Input from '../Base/Input'
 import Button, { ButtonSizes } from '../Base/Button'
+import { useAppDispatch, useAppSelector } from "../../helpers/reduxHooks"
 
 const Header = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const [searchVal, setSearchVal] = useState('')
+
+  const user = useAppSelector((state) => state.user)
+  useEffect(() => {
+    console.log(user)
+  }, [user])
 
   const onClickLogin = () => {
     dispatch({type: "SHOW_LOGIN_FORM", payload: true})

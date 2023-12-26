@@ -1,7 +1,8 @@
 import { useState, SyntheticEvent } from "react"
-import { useDispatch } from "react-redux"
 
 import { postRequest } from '../../../helpers/backendRequsts'
+import { useAppDispatch } from "../../../helpers/reduxHooks"
+import { loginAction } from "../../../reducers/userReducer"
 
 import Button from "../../Base/Button"
 import Input from "../../Base/Input"
@@ -12,7 +13,7 @@ const LoginForm = () => {
   const [error, setError] = useState('')
   const [errorDesc, setErrorDesc] = useState('')
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const formHandler = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -25,6 +26,7 @@ const LoginForm = () => {
         localStorage.setItem('expires', res.jwtoken.expires)
 
         dispatch({type: "SHOW_LOGIN_FORM", payload: false})
+        dispatch(loginAction(res))
     
         setLogin('')
         setPassword('')
