@@ -21,12 +21,8 @@ const LoginForm = () => {
   const loginSender = () => {
     postRequest('/users/login', {login, password})
       .then(res => {
-        localStorage.setItem('user', JSON.stringify(res.user))
-        localStorage.setItem('token', res.jwtoken.token)
-        localStorage.setItem('expires', res.jwtoken.expires)
-
-        dispatch({type: "SHOW_LOGIN_FORM", payload: false})
         dispatch(loginAction(res))
+        dispatch({type: "SHOW_LOGIN_FORM", payload: false})
     
         setLogin('')
         setPassword('')

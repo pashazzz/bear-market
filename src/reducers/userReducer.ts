@@ -4,7 +4,7 @@ import { IUserPublicFields } from '../../interfaces/IUserEntity'
 interface ILoginResponse {
   user: IUserPublicFields,
   jwtoken: {
-    expires: number,
+    expires: string | number,
     token: string,
   },
 }
@@ -30,10 +30,19 @@ const userSlice = createSlice({
     loginAction: (state, action: PayloadAction<ILoginResponse>) => {
       state.data = action.payload.user
       state.token = action.payload.jwtoken.token
+
+      localStorage.setItem('user', JSON.stringify(action.payload.user))
+      localStorage.setItem('token', action.payload.jwtoken.token)
+      localStorage.setItem('expires', String(action.payload.jwtoken.expires))
       // return {...state, data: action.payload.user, token: action.payload.jwtoken.token}
     },
     logoutAction: (state) => {
-      return {...state, data: null, token: null}
+      state.data = null
+      state.token = null
+
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
+      localStorage.removeItem('expires')
     }
   },
 })
