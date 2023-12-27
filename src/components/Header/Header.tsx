@@ -41,7 +41,7 @@ const Header = () => {
         </div>
         { user.data?.username ? (
           <div className='header-user-container'>
-            <div className='header-username'>Hi, {user.data?.username}</div>
+            <div className='header-username'>Hi, <a href='/profile'>{user.data?.username} &#9660;</a></div>
             <Button text='Logout' onClick={onClickLogout} size={ButtonSizes.SMALL}/>
           </div>
         ) : (

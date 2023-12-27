@@ -1,0 +1,20 @@
+.loading-fallback {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+}
+.loading-fallback .fallback-container {
+  padding: 0.5rem;
+  border-bottom: 0.25rem solid black;
+}
+
+.loading-fallback h3, .loading-fallback p {
+  margin: 0.5rem;
+}
+
+.error-boundary-view {
+  padding: 5%;
+}

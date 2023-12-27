@@ -3,14 +3,14 @@
   margin: 0 auto;
 }
 
-main {
+main, .view {
   margin: 0 auto;
   padding: 3vh 0.5rem;
 }
 
 @media (min-width: 600px) {
-  main {
+  main, .view {
     width: 83%;
-    padding: 5vh 0;
+    padding: 6.5vh 0;
   }
 }
