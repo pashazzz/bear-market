@@ -3,6 +3,7 @@ import logo from '/logo.png'
 import Input from '../Base/Input'
 import Button, { ButtonSizes } from '../Base/Button'
 import { useAppDispatch, useAppSelector } from "../../helpers/reduxHooks"
+import { logoutAction } from '../../reducers/userReducer'
 
 const Header = () => {
   const dispatch = useAppDispatch()
@@ -18,6 +19,9 @@ const Header = () => {
   }
   const onClickRegister = () => {
     dispatch({type: "SHOW_REGISTRATION_FORM", payload: true})
+  }
+  const onClickLogout = () => {
+    dispatch(logoutAction())
   }
 
   return (
@@ -35,11 +39,18 @@ const Header = () => {
           />
           <Button text='Search' onClick={() => {}} size={ButtonSizes.SMALL}/>
         </div>
+        { user.data?.username ? (
+          <div className='header-user-container'>
+            <div className='header-username'>Hi, {user.data?.username}</div>
+            <Button text='Logout' onClick={onClickLogout} size={ButtonSizes.SMALL}/>
+          </div>
+        ) : (
         <div className='header-login-container'>
           <span className='header-login' onClick={onClickLogin}>Log in</span>
           {' / '}
           <span className='header-register' onClick={onClickRegister}>Register</span>
         </div>
+        )}
       </div>
     </div>
   )
