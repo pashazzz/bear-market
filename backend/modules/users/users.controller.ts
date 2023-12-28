@@ -5,6 +5,7 @@ import _ from 'lodash'
 import UsersMiddleware from './users.middleware'
 import UsersModel from './users.model'
 import UsersService from './users.service'
+import { IRequestWithUser } from './users.interfaces'
 
 const router = express.Router()
 
@@ -22,6 +23,17 @@ router.post('/login',
     const user = UsersService.sanitizeUserEntity(_.clone(userEntity))
 
     res.status(200).json({user, jwtoken})
+  }
+)
+
+router.get('/username/:username',
+  passport.authenticate('jwt', {session: false}),
+  (req: IRequestWithUser, res) => {
+    if (req.user?.username.toString() !== req.params.username) {
+      return res.status(401).json({ error: 'Access denied' })
+    }
+
+    res.status(200).json(UsersService.sanitizeUserEntity(_.clone(req.user)))
   }
 )
 

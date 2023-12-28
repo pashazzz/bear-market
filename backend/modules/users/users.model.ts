@@ -10,7 +10,7 @@ const dumpUsers: IUserEntity[] = [
     salt: 'hwe945kl;12.q2d',
     passwordHash: '9c7a7495bda6a72018269ea4b976b3cf7b09e97ec24a1b03ce92e4518df5fc7207bbe6ce5dc46711a38e48593f477773176aaff8fd27f2938185ffb09e261501',
     email: 'pmalyshkin@gmail.com',
-    roles: ['admin'],
+    roles: ['admin', 'customer'],
     createdAt: '2023-11-30T08:00:00Z',
   }, {
     // password: "guest123"

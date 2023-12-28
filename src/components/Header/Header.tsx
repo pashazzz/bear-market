@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import history from '../../history'
 import logo from '/logo.png'
 import Input from '../Base/Input'
 import Button, { ButtonSizes } from '../Base/Button'
@@ -10,9 +11,6 @@ const Header = () => {
   const [searchVal, setSearchVal] = useState('')
 
   const user = useAppSelector((state) => state.user)
-  useEffect(() => {
-    console.log(user)
-  }, [user])
 
   const onClickLogin = () => {
     dispatch({type: "SHOW_LOGIN_FORM", payload: true})
@@ -22,6 +20,7 @@ const Header = () => {
   }
   const onClickLogout = () => {
     dispatch(logoutAction())
+    history.push('/')
   }
 
   return (

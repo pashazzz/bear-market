@@ -1,12 +1,13 @@
-import React, { Suspense, useLayoutEffect, useState } from 'react'
+import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react'
 import { ErrorBoundary as Boundary } from 'react-error-boundary'
-import { Route, Router, Routes as Switch } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
+import { Navigate, Outlet, Route, Router, Routes as Switch } from 'react-router-dom'
 
+import history from './history'
 import LoadingFallback from './components/LoadingFallback'
 import Header from './components/Header'
+import { hasRole } from './services/auth'
 
-const history = createBrowserHistory()
+
 
 const MainView = React.lazy(() => import('./views/MainView'))
 const ProfileView = React.lazy(() => import('./views/ProfileView'))
@@ -35,7 +36,10 @@ const AppRoutes = () => {
 
             {/* Default */}
             <Route path="/" element={<MainView />} />
-            <Route path="/profile" element={<ProfileView />} />
+            <Route path="/profile" element={<ProtectedRoute accept='customer'/>}>
+              <Route path="/profile" element={<ProfileView />} />
+            </Route>
+            {/* <ProtectedRoute path="/profile" element={<ProfileView />} accept="customer" /> */}
           </Switch>
         </ErrorBoundary>
       </Router>
@@ -63,6 +67,23 @@ function Fallback(props: { className?: string }) {
       </div>
     </div>
   )
+}
+
+const ProtectedRoute = (props: {accept: string}) => {
+  const [hasAccess, setAccess] = useState(true)
+
+  useEffect(() => {
+    hasRole(props.accept)
+      .then((result) => {
+        setAccess(result)
+      })
+      .catch((e) => {
+        console.log(e)
+        setAccess(false)
+      })
+  }, [])
+
+  return hasAccess ? <Outlet /> : <Navigate to="/" />
 }
 
 export default AppRoutes

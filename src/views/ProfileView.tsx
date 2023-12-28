@@ -1,7 +1,7 @@
 const ProfileView = () => {
   return (
   <div className="view">
-    <div>Profile</div>
+    <h1>Profile</h1>
   </div>)
 }
 

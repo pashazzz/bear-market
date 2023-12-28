@@ -17,7 +17,10 @@ export interface IUserState {
 }
 
 const initialState: IUserState = {
-  data: JSON.parse(localStorage.getItem('user') ?? '{}'),
+  data: localStorage.getItem('user') &&
+          localStorage.getItem('user') !== 'undefined' ?
+            JSON.parse(localStorage.getItem('user') || 'null') :
+            null,
   token: '',
   status: 'idle',
   error: null
