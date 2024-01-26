@@ -11,6 +11,7 @@
 - Grouped by some criteria
 ## Customer page
 - Owned bears
+- Moderators can see new uploaded bears and accept/decline them; send explaining to user if it need
 ## Creating the bear
 - Upload image with pending for accept from admin ?or
 - ? Send request to mage.space or other free ai image generator with api or cheap OpenAI
@@ -19,6 +20,8 @@
 - Additional accessories, icons on the corners (0 - 2 credits)
 ## Bear page
 ### for all
+- only see the card details
+### for logged in users
 - give bet for bear card
 - start conversation with owner
 ### for owner/admin
@@ -28,11 +31,18 @@
 ## Admin side features
 - Admin can accept or decline the new bear from user
 
+## Users
+### Roles
+- Common users, without roles: can own the bear cards and trade them
+- Moderators: can accept/decline the new uploaded bears
+- Admins: can assign roles
+
 ## Technologies
 - React, Vite
 - Node, ExpressJs
 - Sqlite
 
 ## TODO
-- Create authorization mechanism
 - Create Bear page
+- Create Profile page
+- Create registration process
