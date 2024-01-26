@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import IBearEntity from '../../interfaces/IBearEntity'
 import BearCard from '../components/BearCard'
+import { getRequest } from '../helpers/backendRequsts'
 import './MainView.css'
 
 function MainView() {
   const [bears, setBears] = useState<IBearEntity[]>([])
   
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_SERVER_BASE}/bears`)
-      .then((res) => {
-        setBears(res.data)
+    getRequest('/bears')
+      .then((data) => {
+        setBears(data)
       })
       .catch((e) => console.log(e))
   }, [])
