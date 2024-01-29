@@ -15,7 +15,7 @@ const ProfileView = () => {
       .catch(e => {
         console.log(e)
       })
-  }, [])
+  }, [user.data])
   
   return (
   <div className="view profile-container">

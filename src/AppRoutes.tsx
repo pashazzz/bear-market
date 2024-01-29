@@ -19,7 +19,7 @@ const AppRoutes = () => {
     location: history.location
   });
 
-  useLayoutEffect(() => history.listen(setState), [history]);
+  useLayoutEffect(() => history.listen(setState), []);
 
   return (
     <Suspense fallback={<LoadingFallback />}>
@@ -81,7 +81,7 @@ const ProtectedRoute = (props: {accept: string}) => {
         console.log(e)
         setAccess(false)
       })
-  }, [])
+  }, [props.accept])
 
   return hasAccess ? <Outlet /> : <Navigate to="/" />
 }
