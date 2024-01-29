@@ -5,6 +5,10 @@
   position: relative;
 }
 
+.bear-card-container a {
+  color: #CC9544;
+}
+
 .bear-card-container .bear-card-img {
   width: 100%;
   height: 300px;
@@ -41,4 +45,10 @@
 }
 .bear-card-container .bear-card-details .bear-card-bottom .bear-card-price {
   float: right;
+}
+
+@media (prefers-color-scheme: light) {
+  .bear-card-container a {
+    color: #213547;
+  }
 }

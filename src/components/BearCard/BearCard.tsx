@@ -9,12 +9,17 @@ const thumbsDir = import.meta.env.VITE_THUMBS_DIR
 const BearCard = ({bearInfo}: IBearCard) => {
   const bearImgUrl = thumbsDir + bearInfo.imgUrl
   const createdAt = new Date(bearInfo.createdAt)
+  const bearUrl = `/bear/${bearInfo.id}`
   return (
     <div className="bear-card-container">
-      <div className='bear-card-img' style={{backgroundImage: `url(${bearImgUrl})`}} />
+      <a href={bearUrl}>
+        <div className='bear-card-img' style={{backgroundImage: `url(${bearImgUrl})`}} />
+      </a>
       <div className='bear-card-details'>
         <div style={{minHeight: '72px'}}>
-          <div className='bear-card-title'>{bearInfo.title}</div>
+          <a href={bearUrl}>
+            <div className='bear-card-title'>{bearInfo.title}</div>
+          </a>
           { bearInfo.description && (<div className='bear-card-description'>{bearInfo.description}</div>) }
         </div>
         <div className='bear-card-bottom'>

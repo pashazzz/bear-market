@@ -8,9 +8,9 @@ import Header from './components/Header'
 import { hasRole } from './services/auth'
 
 
-
 const MainView = React.lazy(() => import('./views/MainView'))
 const ProfileView = React.lazy(() => import('./views/ProfileView'))
+const BearView = React.lazy(() => import('./views/BearView'))
 
 
 const AppRoutes = () => {
@@ -39,6 +39,7 @@ const AppRoutes = () => {
             <Route path="/profile" element={<ProtectedRoute accept='customer'/>}>
               <Route path="/profile" element={<ProfileView />} />
             </Route>
+            <Route path="/bear/:id" element={<BearView />} />
             {/* <ProtectedRoute path="/profile" element={<ProfileView />} accept="customer" /> */}
           </Switch>
         </ErrorBoundary>

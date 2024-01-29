@@ -50,6 +50,11 @@ const fetchBears = (ofUserId?: number): IBearEntity[] => {
   return dumpBears.filter(bear => bear.owner === ofUserId)
 }
 
+const fetchBear = (id: number): IBearEntity | undefined => {
+  return dumpBears.find(b => b.id === id)
+}
+
 export default {
   fetchBears,
+  fetchBear,
 }
