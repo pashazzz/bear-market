@@ -43,8 +43,11 @@ const dumpBears: IBearEntity[] = [
   },
 ]
 
-const fetchBears = (): IBearEntity[] => {
-  return dumpBears
+const fetchBears = (ofUserId?: number): IBearEntity[] => {
+  if (ofUserId === undefined) {
+    return dumpBears
+  }
+  return dumpBears.filter(bear => bear.owner === ofUserId)
 }
 
 export default {

@@ -6,6 +6,7 @@ import UsersMiddleware from './users.middleware'
 import UsersModel from './users.model'
 import UsersService from './users.service'
 import { IRequestWithUser } from './users.interfaces'
+import bearsModel from '../bears/bears.model'
 
 const router = express.Router()
 
@@ -34,6 +35,13 @@ router.get('/username/:username',
     }
 
     res.status(200).json(UsersService.sanitizeUserEntity(_.clone(req.user)))
+  }
+)
+
+router.get('/:username/bears',
+  passport.authenticate('jwt', {session: false}),
+  (req: IRequestWithUser, res) => {
+    res.status(200).json(bearsModel.fetchBears(req.user?.id))
   }
 )
 

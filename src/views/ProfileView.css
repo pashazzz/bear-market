@@ -1,0 +1,6 @@
+.profile-container .profile-bears-collection {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 1.2rem;
+  column-gap: 1.2rem;
+}
