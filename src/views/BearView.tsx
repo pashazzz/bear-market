@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import IBearEntity from '../../interfaces/IBearEntity'
 import { getRequest } from '../helpers/backendRequsts'
+// import { useAppSelector } from "../helpers/reduxHooks"
 import './BearView.css'
 import Back from '../components/Base/Back'
 
@@ -17,8 +18,11 @@ const statusDescriptions: Record<number, IError> = {
   },
 }
 
+const thumbsDir = import.meta.env.VITE_THUMBS_DIR
+
 const BearView = () => {
   const params = useParams()
+  // const user = useAppSelector((state) => state.user)
 
   const [bear, setBear] = useState<IBearEntity | null>(null)
   const [error, setError] = useState<IError | null>(null)
@@ -48,6 +52,7 @@ const BearView = () => {
     <div className="view bear-container">
       <Back />
       <h1>{bear?.title}</h1>
+      <img className="bear-container-image" src={`${thumbsDir + bear?.imgUrl}`} />
     </div>
   )
 }
