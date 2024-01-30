@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url'
 
 import BearsController from './backend/modules/bears/bears.controller'
 import UsersController from './backend/modules/users/users.controller'
+import ImagesController from './backend/modules/images/images.controller'
 
 import passportInit from './backend/services/passport'
 
@@ -25,7 +26,10 @@ app.use(passport.initialize())
 // Controllers
 app.use('/api/bears', BearsController)
 app.use('/api/users', UsersController)
-// 
+//
+
+// Access to images
+app.use('/api/images', ImagesController)
 
 app.use(express.static('dist')) // static asserts from /build
 // wildcard for not handled requests

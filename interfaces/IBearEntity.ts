@@ -3,6 +3,7 @@ export default interface IBearEntity {
   title: string,
   description?: string,
   imgUrl: string,
+  imgExt: string,
   owner: number,
   price?: number,
   createdAt: string,

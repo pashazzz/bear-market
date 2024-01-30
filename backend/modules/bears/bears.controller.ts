@@ -16,7 +16,7 @@ router.get('/',
 router.get('/:id',
   usersMiddleware.isAuthenticated,
   (req: Request<{id: number}>, res: Response) => {
-    const bear: IBearEntity | undefined = BearsModel.fetchBear(Number(req.params.id))
+    const bear: IBearEntity | undefined = BearsModel.fetchBearById(Number(req.params.id))
     const status: number = bear === undefined ? 404 : 200
 
     res.status(status).json(bear)

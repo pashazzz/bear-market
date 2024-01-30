@@ -18,7 +18,7 @@ const statusDescriptions: Record<number, IError> = {
   },
 }
 
-const thumbsDir = import.meta.env.VITE_THUMBS_DIR
+const apiUrl = import.meta.env.VITE_SERVER_BASE
 
 const BearView = () => {
   const params = useParams()
@@ -47,12 +47,13 @@ const BearView = () => {
       </div>
     )
   }
+  const bearThumbUrl = `${apiUrl}/images/thumbs/${bear?.imgUrl}`
 
   return (
     <div className="view bear-container">
       <Back />
       <h1>{bear?.title}</h1>
-      <img className="bear-container-image" src={`${thumbsDir + bear?.imgUrl}`} />
+      <img className="bear-container-image" src={bearThumbUrl} />
     </div>
   )
 }

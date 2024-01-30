@@ -4,16 +4,17 @@ interface IBearCard {
   bearInfo: IBearEntity
 }
 
-const thumbsDir = import.meta.env.VITE_THUMBS_DIR
+const apiUrl = import.meta.env.VITE_SERVER_BASE
 
 const BearCard = ({bearInfo}: IBearCard) => {
-  const bearImgUrl = thumbsDir + bearInfo.imgUrl
+  const bearThumbUrl = `${apiUrl}/images/thumbs/${bearInfo.imgUrl}`
   const createdAt = new Date(bearInfo.createdAt)
   const bearUrl = `/bear/${bearInfo.id}`
+
   return (
     <div className="bear-card-container">
       <a href={bearUrl}>
-        <div className='bear-card-img' style={{backgroundImage: `url(${bearImgUrl})`}} />
+        <div className='bear-card-img' style={{backgroundImage: `url(${bearThumbUrl})`}} />
       </a>
       <div className='bear-card-details'>
         <div style={{minHeight: '72px'}}>
