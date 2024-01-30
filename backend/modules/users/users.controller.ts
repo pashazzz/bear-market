@@ -5,7 +5,6 @@ import _ from 'lodash'
 import UsersMiddleware from './users.middleware'
 import UsersModel from './users.model'
 import UsersService from './users.service'
-import { IRequestWithUser } from './users.interfaces'
 import bearsModel from '../bears/bears.model'
 
 const router = express.Router()
@@ -29,7 +28,7 @@ router.post('/login',
 
 router.get('/username/:username',
   passport.authenticate('jwt', {session: false}),
-  (req: IRequestWithUser, res) => {
+  (req: Request, res) => {
     if (req.user?.username.toString() !== req.params.username) {
       return res.status(401).json({ error: 'Access denied' })
     }
@@ -40,7 +39,7 @@ router.get('/username/:username',
 
 router.get('/:username/bears',
   passport.authenticate('jwt', {session: false}),
-  (req: IRequestWithUser, res) => {
+  (req: Request, res) => {
     res.status(200).json(bearsModel.fetchBears(req.user?.id))
   }
 )

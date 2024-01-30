@@ -6,6 +6,13 @@ import path from 'path'
 // import { callbackify } from 'util'
 import { fileURLToPath } from 'url'
 import UsersModel from '../modules/users/users.model'
+import { IUserEntity } from '../../interfaces/IUserEntity'
+
+declare module "express-serve-static-core" {
+  interface Request {
+    user: IUserEntity
+  }
+}
 
 // app.js will pass the global passport object here, and this function will configure it
 const passportInit = (passport: PassportStatic) => {

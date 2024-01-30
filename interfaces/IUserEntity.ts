@@ -1,4 +1,5 @@
 export interface IUserPublicFields {
+  id: number,
   username: string,
   firstName?: string,
   lastName?: string,
@@ -7,14 +8,12 @@ export interface IUserPublicFields {
 }
 
 export interface IUserEntity extends IUserPublicFields {
-  id: number,
   salt: string,
   passwordHash: string,
   createdAt: string,
 }
 
 export enum HiddenFields {
-  id,
   salt,
   passwordHash,
   createdAt,

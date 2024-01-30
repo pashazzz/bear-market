@@ -1,10 +1,11 @@
-import axios from 'axios'
+import axios, { ResponseType } from 'axios'
 
 const sendRequest = (
   method = 'post',
   link: string,
   data?: object,
   auth = false,
+  responseType?: ResponseType,
 ) => {
   const headers: {Authorization?: string} = {}
 
@@ -23,6 +24,7 @@ const sendRequest = (
     url: `${import.meta.env.VITE_SERVER_BASE}${link}`,
     data,
     headers,
+    responseType,
   })
     .then((res) => res.data)
     .catch((err) => {
@@ -35,8 +37,8 @@ export const getRequest = (link: string) => {
   return sendRequest('get', link)
 }
 
-export const getRequestWithAuth = (link: string) => {
-  return sendRequest('get', link, {}, true)
+export const getRequestWithAuth = (link: string, responseType?: ResponseType) => {
+  return sendRequest('get', link, {}, true, responseType)
 }
 
 export const postRequest = (link: string, data = {}) => {

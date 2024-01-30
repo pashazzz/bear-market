@@ -1,3 +1,7 @@
 .bear-container-image {
   border-radius: 8px;
 }
+.bear-container-orig-image {
+  border-radius: 8px;
+  max-width: 100%;
+}
