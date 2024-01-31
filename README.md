@@ -42,7 +42,10 @@
 - Node, ExpressJs
 - Sqlite
 
+## Using DB
+To have the repeatable process, we will not use the common persistant DB but in-memory.
+On server start it'll be seeded and all lifetime of app the changes will appear there.
+
 ## TODO
-- Create Bear page
-- Create Profile page
+- Use DB
 - Create registration process
