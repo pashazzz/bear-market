@@ -39,6 +39,7 @@ const BearView = () => {
       })
   }, [params.id])
 
+  // original image can be accessed only for owner
   useEffect(() => {
     if (user.data?.id !== undefined && user.data?.id === bear?.owner) {
       getRequestWithAuth(`/images/orig/${bear?.imgUrl}`, 'arraybuffer')
@@ -53,7 +54,7 @@ const BearView = () => {
         })
         .catch(e => console.log(e))
     }
-  }, [user.data?.username, bear])
+  }, [user.data?.id, bear])
 
   if (error !== null) {
     return (
