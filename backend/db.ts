@@ -1,3 +1,6 @@
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import sqlite3 from 'sqlite3'
 
 import { users } from './seeds/users'
@@ -55,7 +58,33 @@ function prepareBearsString(): string {
   return bearsInsertString
 }
 
+function refreshImgs() {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url))
+  const assetsOrigDir = path.join(__dirname + '/assets/orig')
+  const assetsThumbsDir = path.join(__dirname + '/assets/thumbs')
+  const seedsOrigDir = path.join(__dirname + '/seeds/origImgs')
+  const seedsThumbsDir = path.join(__dirname + '/seeds/thumbImgs')
+
+  fs.rmSync(assetsOrigDir, {recursive: true, force: true})
+  fs.rmSync(assetsThumbsDir, {recursive: true, force: true})
+
+  fs.mkdirSync(assetsOrigDir)
+  fs.mkdirSync(assetsThumbsDir)
+  
+  fs.cp(seedsOrigDir,
+    assetsOrigDir, 
+    {recursive: true},
+    err => {err ? console.log(err) : (() => {})()})
+
+  fs.cp(seedsThumbsDir,
+    assetsThumbsDir,
+    {recursive: true},
+    err => {err ? console.log(err) : (() => {})()})
+}
+
 function seedData(db: sqlite3.Database) {
+  refreshImgs()
+
   db.run(`CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
