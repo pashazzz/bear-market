@@ -22,7 +22,14 @@ function prepareUsersString(): string {
   const usersInsertArray: string[] = []
   users.forEach(u => {
     usersInsertArray.push(
-      `("${u.username}", ${u.firstName ? `"${u.firstName}"` : 'NULL'}, ${u.lastName ? `"${u.lastName}"`: 'NULL'}, "${u.salt}", "${u.passwordHash}", "${u.email}", "${u.roles}", "${u.createdAt}")`
+      `("${u.username}",
+      ${u.firstName ? `"${u.firstName}"` : 'NULL'},
+      ${u.lastName ? `"${u.lastName}"`: 'NULL'},
+      "${u.salt}",
+      "${u.passwordHash}",
+      "${u.email}",
+      "${u.roles}",
+      "${u.createdAt}")`
       )
   })
   const usersInsertString =  `INSERT INTO users (username, firstName, lastName, salt, passwordHash, email, roles, createdAt) VALUES ${usersInsertArray.join(', ')};`
@@ -34,7 +41,13 @@ function prepareBearsString(): string {
   const bearsInsertArray: string[] = []
   bears.forEach(b => {
     bearsInsertArray.push(
-      `("${b.title}", ${b.description ? `"${b.description}"` : 'NULL'}, "${b.imgUrl}", "${b.imgExt}", ${b.owner}, "${b.price ?? 'NULL'}", "${b.createdAt}")`
+      `("${b.title}",
+      ${b.description ? `"${b.description}"` : 'NULL'},
+      "${b.imgUrl}",
+      "${b.imgExt}",
+      ${b.owner},
+      ${b.price ? `"${b.price}"` : 'NULL'},
+      "${b.createdAt}")`
       )
   })
   const bearsInsertString =  `INSERT INTO bears (title, description, imgUrl, imgExt, owner, price, createdAt) VALUES ${bearsInsertArray.join(', ')};`
