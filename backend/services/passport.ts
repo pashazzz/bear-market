@@ -33,7 +33,7 @@ const passportInit = (passport: PassportStatic) => {
   
 }
 
-function verifyJWT (jwt_payload, done) {
+async function verifyJWT (jwt_payload, done) {
   const now = new Date().valueOf()
   if (now > jwt_payload.exp) {
     return done(null, false, {
@@ -46,7 +46,7 @@ function verifyJWT (jwt_payload, done) {
     }) //try catch - we need to check it somewhere on frontend
   }
 
-  const user = UsersModel.findUserById(jwt_payload.sub)
+  const user = await UsersModel.findUserById(jwt_payload.sub)
   if (user === undefined) {
     return done(null, false)
   }

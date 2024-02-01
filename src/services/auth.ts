@@ -8,6 +8,7 @@ export const hasRole = async (role: string) => {
     ? false
     : getRequestWithAuth(`/users/username/${user.username}`)
         .then((res) => {
-          return (res.roles.filter((r: string) => r === role).length > 0)
+          const currentRoles = res.roles.split(',')
+          return (currentRoles.filter((r: string) => r === role).length > 0)
         })
 }
