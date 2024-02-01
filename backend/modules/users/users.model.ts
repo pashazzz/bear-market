@@ -33,7 +33,6 @@ const dumpUsers: IUserEntity[] = [
     roles: ['customer'],
     createdAt: '2023-12-1T08:00:00Z',
   }
-  
 ]
 
 function findUserById(id: number): IUserEntity | undefined {

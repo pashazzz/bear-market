@@ -1,6 +1,7 @@
 import sqlite3 from 'sqlite3'
 
 import { users } from './seeds/users'
+import { bears } from './seeds/bears'
 
 export function startDb ():sqlite3.Database {
   const db = new sqlite3.Database(':memory:', err => {
@@ -17,7 +18,7 @@ export function startDb ():sqlite3.Database {
   return db
 }
 
-function prepareUsersString() {
+function prepareUsersString(): string {
   const usersInsertArray: string[] = []
   users.forEach(u => {
     usersInsertArray.push(
@@ -29,17 +30,38 @@ function prepareUsersString() {
   return usersInsertString
 }
 
+function prepareBearsString(): string {
+  const bearsInsertArray: string[] = []
+  bears.forEach(b => {
+    bearsInsertArray.push(
+      `("${b.title}", ${b.description ? `"${b.description}"` : 'NULL'}, "${b.imgUrl}", "${b.imgExt}", ${b.owner}, "${b.price ?? 'NULL'}", "${b.createdAt}")`
+      )
+  })
+  const bearsInsertString =  `INSERT INTO bears (title, description, imgUrl, imgExt, owner, price, createdAt) VALUES ${bearsInsertArray.join(', ')};`
+
+  return bearsInsertString
+}
+
 function seedData(db: sqlite3.Database) {
   db.run(`CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username text NOT NULL UNIQUE,
-    firstName text,
-    lastName text,
-    salt text NOT NULL,
-    passwordHash text NOT NULL,
-    email text NOT NULL UNIQUE,
-    roles text,
+    username TEXT NOT NULL UNIQUE,
+    firstName TEXT,
+    lastName TEXT,
+    salt TEXT NOT NULL,
+    passwordHash TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    roles TEXT,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL);`, () => db.run(prepareUsersString()))
   
+  db.run(`CREATE TABLE bears (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT,
+    imgUrl TEXT NOT NULL,
+    imgExt TEXT NOT NULL,
+    owner INTEGER NOT NULL,
+    price NUMERIC,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL);`, () => db.run(prepareBearsString()))
   
 }
