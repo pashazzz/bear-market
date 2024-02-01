@@ -12,8 +12,8 @@ const __dirname = path.dirname(__filename)
 const router = express.Router()
 
 router.get('/thumbs/:name',
-  (req: Request<{name: string}>, res: Response) => {
-    const bear: IBearEntity | undefined = bearsModel.fetchBearByUrl(req.params.name)
+  async (req: Request<{name: string}>, res: Response) => {
+    const bear: IBearEntity | undefined = await bearsModel.fetchBearByUrl(req.params.name)
     if (bear === undefined) {
       return res.status(404).json({})
     }
@@ -28,8 +28,8 @@ router.get('/thumbs/:name',
 
   router.get('/orig/:name',
     usersMiddleware.isAuthenticated, 
-    (req: Request<{name: string}>, res: Response) => {
-      const bear: IBearEntity | undefined = bearsModel.fetchBearByUrl(req.params.name)
+    async (req: Request<{name: string}>, res: Response) => {
+      const bear: IBearEntity | undefined = await bearsModel.fetchBearByUrl(req.params.name)
       if (req.user?.username === undefined) {
         return res.status(401).json({})
       }

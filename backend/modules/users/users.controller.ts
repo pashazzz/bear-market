@@ -40,8 +40,10 @@ router.get('/username/:username',
 
 router.get('/:username/bears',
   passport.authenticate('jwt', {session: false}),
-  (req: Request, res) => {
-    res.status(200).json(bearsModel.fetchBears(req.user?.id))
+  async (req: Request, res) => {
+    const bears = await bearsModel.fetchBears(req.user?.id)
+
+    res.status(200).json(bears)
   }
 )
 
