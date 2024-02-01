@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 
+backend/assets
 backend/utils/*.pem
 
 # Editor directories and files
