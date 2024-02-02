@@ -5,7 +5,7 @@ import passport from 'passport'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import { startDb } from './backend/db'
+import { startDb } from './backend/dbPrepare'
 import BearsController from './backend/modules/bears/bears.controller'
 import UsersController from './backend/modules/users/users.controller'
 import ImagesController from './backend/modules/images/images.controller'

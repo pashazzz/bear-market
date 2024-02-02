@@ -7,11 +7,15 @@ import { users } from './seeds/users'
 import { bears } from './seeds/bears'
 
 export function startDb ():sqlite3.Database {
-  const db = new sqlite3.Database(':memory:', err => {
+  let dbAddr = ':memory:'
+  if (process?.env?.DB_ADDR && process?.env?.DB_ADDR !== '') {
+    dbAddr = process?.env?.DB_ADDR
+  }
+  const db = new sqlite3.Database(dbAddr, err => {
     if (err) {
       return console.error('---> DB not created', err?.message)
     }
-    console.log('---> Connected to the in-memory SQlite database.')
+    console.log(`---> Connected to the SQlite database (${dbAddr})`)
     seedData(db)
     console.log('---> DB seeded')
 
