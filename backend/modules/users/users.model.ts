@@ -14,7 +14,7 @@ function findUserByUsername(username: string): Promise<IUserEntity | undefined> 
 }
 
 function checkUserPassword(user: IUserEntity, password: string): boolean {
-  const strForHash: string = user.createdAt + password + user.salt + process?.env?.SALT_FOR_HASH
+  const strForHash: string = user.createdAt + password + user.salt + process.env.SALT_FOR_HASH
 
   const hashFunc = createHash('SHA3-512')
   hashFunc.update(strForHash)

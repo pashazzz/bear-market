@@ -8,8 +8,8 @@ import { bears } from './seeds/bears'
 
 export function startDb ():sqlite3.Database {
   let dbAddr = ':memory:'
-  if (process?.env?.DB_ADDR && process?.env?.DB_ADDR !== '') {
-    dbAddr = process?.env?.DB_ADDR
+  if (process.env.DB_ADDR && process.env.DB_ADDR !== '') {
+    dbAddr = process.env.DB_ADDR
   }
   const db = new sqlite3.Database(dbAddr, err => {
     if (err) {

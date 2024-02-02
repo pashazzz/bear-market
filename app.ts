@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 import cors from 'cors'
 import express, { Express, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
 import passport from 'passport'
@@ -11,6 +12,8 @@ import UsersController from './backend/modules/users/users.controller'
 import ImagesController from './backend/modules/images/images.controller'
 
 import passportInit from './backend/services/passport'
+
+dotenv.config()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
