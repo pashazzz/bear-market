@@ -111,7 +111,9 @@ function refreshImgs() {
 }
 
 function seedData(db: sqlite3.Database) {
-  refreshImgs()
+  if (process.env.NEED_TO_RETURN_TO_INIT_IMAGES_ON_RESTART === 'true') {
+    refreshImgs()
+  }
 
   db.run(`CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
