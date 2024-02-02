@@ -1,33 +1,16 @@
 import { createHash } from 'crypto'
 
-import { db } from '../../../app'
+import { getOne } from '../../services/db'
 import { IUserEntity } from "../../../interfaces/IUserEntity";
 
 function findUserById(id: number): Promise<IUserEntity | undefined> {
   const sql = `SELECT * FROM users WHERE id = ${id}`
-  return new Promise(resolve => {
-    db.get(sql, (err, row: IUserEntity) => {
-      if (err) {
-        console.error(err.message)
-        resolve(undefined)
-      }
-      resolve(row)
-    })
-  })
+  return getOne(sql) as Promise<IUserEntity>
 }
 
 function findUserByUsername(username: string): Promise<IUserEntity | undefined> {
   const sql = `SELECT * FROM users WHERE username = "${username}"`
-
-  return new Promise<IUserEntity | undefined>(resolve => {
-    db.get(sql, (err, row: IUserEntity) => {
-      if (err) {
-        console.error(err.message)
-        resolve(undefined)
-      }
-      resolve(row)
-    })
-  })
+  return getOne(sql) as Promise<IUserEntity>
 }
 
 function checkUserPassword(user: IUserEntity, password: string): boolean {
