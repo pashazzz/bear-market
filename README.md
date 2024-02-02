@@ -47,5 +47,5 @@ To have the repeatable process, we will not use the common persistant DB but in-
 On server start it'll be seeded and all lifetime of app the changes will appear there.
 
 ## TODO
-- Use DB
 - Create registration process
+- Uploading new image for moderating

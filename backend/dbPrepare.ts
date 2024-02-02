@@ -6,21 +6,46 @@ import sqlite3 from 'sqlite3'
 import { users } from './seeds/users'
 import { bears } from './seeds/bears'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 export function startDb ():sqlite3.Database {
   let dbAddr = ':memory:'
   if (process.env.DB_ADDR && process.env.DB_ADDR !== '') {
     dbAddr = process.env.DB_ADDR
   }
-  const db = new sqlite3.Database(dbAddr, err => {
-    if (err) {
-      return console.error('---> DB not created', err?.message)
-    }
-    console.log(`---> Connected to the SQlite database (${dbAddr})`)
-    seedData(db)
-    console.log('---> DB seeded')
 
-    return db
-  })
+  let db: sqlite3.Database
+  let needToSeed = true
+
+  // callback on connect to DB
+  function onConnect(err): sqlite3.Database | undefined {
+    if (err) {
+      console.error('---> DB not created', err?.message)
+      return undefined
+    }
+
+    console.log(`---> Connected to the SQlite database (${dbAddr})`)
+    if (needToSeed) {
+      seedData(db)
+      console.log('---> DB seeded')
+    }
+  }
+
+  // in-memory: every time that server restart the DB state returns to initial
+  // filepath: on first time calling the file creates, seeded and after that used
+  if (dbAddr === ':memory:') {
+    db = new sqlite3.Database(dbAddr, onConnect)
+  } else {
+    const dbPath = path.join(__dirname + dbAddr)
+    needToSeed = false
+    // check and create DB file if it not exists
+    if (!fs.existsSync(dbPath)) {
+      fs.closeSync(fs.openSync(dbPath, 'w'))
+      needToSeed = true
+    }
+
+    db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, onConnect)
+  }
 
   return db
 }
@@ -63,7 +88,6 @@ function prepareBearsString(): string {
 }
 
 function refreshImgs() {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url))
   const assetsOrigDir = path.join(__dirname + '/assets/orig')
   const assetsThumbsDir = path.join(__dirname + '/assets/thumbs')
   const seedsOrigDir = path.join(__dirname + '/seeds/origImgs')
