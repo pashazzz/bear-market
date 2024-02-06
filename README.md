@@ -47,5 +47,11 @@ To have the repeatable process, we will not use the common persistant DB but in-
 On server start it'll be seeded and all lifetime of app the changes will appear there.
 
 ## TODO
+- Trade process:
+  - assign the price for Bear card
+  - assign the period of trade (start accepting bets from yyyy.mm.dd and on the end of period trade with last largest proposition or first of equal)
+  - send messages between users
+  - send bet to Bear card
+  - display last largest bet like the price
 - Create registration process
 - Uploading new image for moderating
