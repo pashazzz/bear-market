@@ -80,10 +80,12 @@ function prepareBearsString(): string {
       "${b.imgExt}",
       ${b.owner},
       ${b.price ? `"${b.price}"` : 'NULL'},
+      ${b.tradeStart ? `"${b.tradeStart}"` : 'NULL'},
+      ${b.tradeEnd ? `"${b.tradeEnd}"` : 'NULL'},
       "${b.createdAt}")`
       )
   })
-  const bearsInsertString =  `INSERT INTO bears (title, description, imgUrl, imgExt, owner, price, createdAt) VALUES ${bearsInsertArray.join(', ')};`
+  const bearsInsertString =  `INSERT INTO bears (title, description, imgUrl, imgExt, owner, price, tradeStart, tradeEnd, createdAt) VALUES ${bearsInsertArray.join(', ')};`
 
   return bearsInsertString
 }
@@ -136,6 +138,8 @@ function seedData(db: sqlite3.Database) {
     imgExt TEXT NOT NULL,
     owner INTEGER NOT NULL,
     price NUMERIC,
+    tradeStart DATETIME,
+    tradeEnd DATETIME,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL);`, () => db.run(prepareBearsString()))
   
 }

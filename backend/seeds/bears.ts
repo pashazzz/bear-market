@@ -32,6 +32,8 @@ export const bears = [
     imgExt: 'png',
     owner: 3,
     price: 5,
+    tradeStart: '2023-12-01 09:00:00',
+    tradeEnd: '2040-12-01 00:00:00',
     createdAt: '2023-12-01 09:00:00',
   },
   {

@@ -1,5 +1,5 @@
 // import { db } from "../../../app"
-import { getAll, getOne } from "../../services/db"
+import { getAll, getOne, modify } from "../../services/db"
 import IBearEntity from "../../../interfaces/IBearEntity"
 
 const fetchBears = async (ofUserId?: number): Promise<IBearEntity[]> => {
@@ -16,8 +16,14 @@ const fetchBearByUrl = (url: string): Promise<IBearEntity | undefined> => {
   return getOne(sql) as Promise<IBearEntity>
 }
 
+const updateField = (id: number, field: string, value: unknown):  Promise<void> => {
+  const sql = `UPDATE bears SET ${field} = ${value} WHERE id = ${id}`
+  return modify(sql) as Promise<void>
+}
+
 export default {
   fetchBears,
   fetchBearById,
   fetchBearByUrl,
+  updateField,
 }

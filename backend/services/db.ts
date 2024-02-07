@@ -23,3 +23,15 @@ export function getAll(sql: string) {
     })
   })
 }
+
+export function modify(sql: string) {
+  return new Promise<void>((resolve, reject) => {
+    db.run(sql, (err) => {
+      if (err) {
+        console.error(err.message)
+        reject()
+      }
+      resolve()
+    })
+  })
+}
