@@ -10,7 +10,12 @@ export interface IUserPublicFields {
 export interface IUserEntity extends IUserPublicFields {
   salt: string,
   passwordHash: string,
+  wallet: number,
   createdAt: string,
+}
+
+export enum PrivateFields {
+  wallet,
 }
 
 export enum HiddenFields {

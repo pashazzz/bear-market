@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { IUserPublicFields } from '../../interfaces/IUserEntity'
+import { IUserEntity } from '../../interfaces/IUserEntity'
 
 interface ILoginResponse {
-  user: IUserPublicFields,
+  user: IUserEntity,
   jwtoken: {
     expires: string | number,
     token: string,
@@ -10,7 +10,7 @@ interface ILoginResponse {
 }
 
 export interface IUserState {
-  data?: IUserPublicFields | null
+  data?: IUserEntity | null
   token?: string | null
   status: "idle" | "loading" | "failed"
   error: string | null

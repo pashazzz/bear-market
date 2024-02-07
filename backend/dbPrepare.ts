@@ -61,10 +61,11 @@ function prepareUsersString(): string {
       "${u.passwordHash}",
       "${u.email}",
       "${u.roles}",
+      ${u.wallet ? `"${u.wallet}"`: 'NULL'},
       "${u.createdAt}")`
       )
   })
-  const usersInsertString =  `INSERT INTO users (username, firstName, lastName, salt, passwordHash, email, roles, createdAt) VALUES ${usersInsertArray.join(', ')};`
+  const usersInsertString =  `INSERT INTO users (username, firstName, lastName, salt, passwordHash, email, roles, wallet, createdAt) VALUES ${usersInsertArray.join(', ')};`
 
   return usersInsertString
 }
@@ -124,6 +125,7 @@ function seedData(db: sqlite3.Database) {
     passwordHash TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     roles TEXT,
+    wallet NUMERIC,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL);`, () => db.run(prepareUsersString()))
   
   db.run(`CREATE TABLE bears (

@@ -6,5 +6,7 @@ export default interface IBearEntity {
   imgExt: string,
   owner: number,
   price?: number,
+  tradeStart?: string,
+  tradeEnd?: string,
   createdAt: string,
 }
