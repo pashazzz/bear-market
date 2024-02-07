@@ -21,6 +21,7 @@ const ProfileView = () => {
   <div className="view profile-container">
     <h1>Hi, {user.data?.username}</h1>
     <br />
+    <h3>Wallet: {user.data?.wallet} Credits</h3>
     <h2>Your bears:</h2>
     <hr />
     <div className="profile-bears-collection">
