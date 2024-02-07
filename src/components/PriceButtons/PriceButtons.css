@@ -1,0 +1,13 @@
+.bear-container .bear-container-price {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  align-content: flex-start;
+  justify-content: start;
+}
+
+.bear-container .bear-container-price .bear-container-price-input {
+  width: 8rem;
+  margin-left: 0;
+  margin-right: 0;
+}

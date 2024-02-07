@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import IBearEntity from '../../interfaces/IBearEntity'
 import { getRequest, getRequestWithAuth, postRequestWithAuth } from '../helpers/backendRequsts'
 import { useAppSelector } from "../helpers/reduxHooks"
 import './BearView.css'
 import Back from '../components/Base/Back'
+import PriceButtons from '../components/PriceButtons'
 
 interface IError {
   caption: string,
@@ -113,66 +114,6 @@ const BearView = () => {
           </div>
         </div>
       }
-    </div>
-  )
-}
-
-interface PriceBtnProps {
-  currentPrice?: number | null,
-  setPrice: (val: number | null) => void
-}
-
-const PriceButtons: FC<PriceBtnProps> = ({currentPrice, setPrice}) => {
-  const minPrice = 3
-  const maxPrice = 10
-
-  const [displayBtn, setDisplayBtn] = useState<boolean>(true)
-  const [selectedPrice, setSelectedPrice] = useState<number>(currentPrice ?? minPrice)
-
-  const onWithdrawClick = () => {
-    if (window.confirm("If you withdraw the bear from sell it'll clear the price and sell period. Are you really want?"))
-    setPrice(null)
-  }
-
-  if (displayBtn) {
-    return (
-      <div className="bear-container-price">
-        {currentPrice ? `Price: ${currentPrice} Credits` : ''}
-        <button onClick={() => setDisplayBtn(false)}>
-          {currentPrice ? 'Change price' : 'Set price'}
-        </button>
-        {currentPrice && (
-          <button onClick={onWithdrawClick}>Withdraw from sell</button>
-        )}
-      </div>
-    )
-  }
-
-  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let num = Number(e.target.value)
-    if (num < minPrice) {
-      num = minPrice
-      e.target.value = String(minPrice)
-    }
-    if (num > maxPrice) {
-      num = maxPrice
-      e.target.value = String(maxPrice)
-    }
-    setSelectedPrice(num)
-  }
-
-  const onSetPrice = () => {
-    setPrice(selectedPrice)
-    setDisplayBtn(true)
-  }
-
-  return (
-    <div className="bear-container-price">
-      Price:
-      <input type='number' min={minPrice} max={maxPrice} value={selectedPrice} onChange={onPriceChange}/>
-      Credits
-      <button onClick={onSetPrice}>Set price</button>
-      <button onClick={() => setDisplayBtn(true)}>Cancel</button>
     </div>
   )
 }

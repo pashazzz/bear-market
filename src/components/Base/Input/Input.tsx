@@ -8,14 +8,33 @@ interface Props {
   isFocused?: boolean
   value: string | number
   setValue: React.Dispatch<React.SetStateAction<string>>
+  min?: number
+  max?: number
 }
 
 const Input: React.FunctionComponent<Props> = (props: Props) => {
+  // TODO: add the error section
+
   const autoFocusCallback = React.useCallback((inputElement: HTMLInputElement) => {
     if (inputElement && props.isFocused) {
       inputElement.focus()
     }
   }, [props.isFocused])
+
+  const onChangeVal = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value
+    if (props.type === 'number') {
+      let num = Number(val)
+      if (props.min && num < props.min) {
+        num = props.min
+      }
+      if (props.max && num > props.max) {
+        num = props.max
+      }
+      val = String(num)
+    }
+    props.setValue(val)
+  }
 
   return (
     <div className={'input-wrapper ' + (props.className ?? '')}>
@@ -25,7 +44,9 @@ const Input: React.FunctionComponent<Props> = (props: Props) => {
         placeholder={props.placeholder}
         value={props.value}
         ref={autoFocusCallback}
-        onChange={(e) => props.setValue(e.target.value) }
+        onChange={onChangeVal}
+        min={props.min}
+        max={props.max}
       />
     </div>
   )

@@ -17,11 +17,6 @@
 .bear-container .bear-container-options div {
   margin-top: 1%;
 }
-.bear-container .bear-container-price {
-  display: flex;
-  gap: 1em;
-  align-items: center;
-}
 
 @media (min-width: 600px) {
   .bear-container .bear-container-img {
