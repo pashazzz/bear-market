@@ -34,6 +34,9 @@ const BearView = () => {
     getRequest(`/bears/${params.id}`)
       .then(data => {
         setBear(data)
+        if (data.price) {
+          setPrice(data.price)
+        }
       })
       .catch(e => {
         console.log(e)
@@ -53,9 +56,6 @@ const BearView = () => {
             ),
           )
           setOrigImg('data:;base64,' + base64)
-          if (bear?.price) {
-            setPrice(bear.price)
-          }
         })
         .catch(e => console.log(e))
     }
@@ -66,7 +66,7 @@ const BearView = () => {
       postRequestWithAuth(`/bears/changePrice`, {id: bear?.id, price})
         .then(res => console.log(res))
     }
-  }, [price])
+  }, [bear?.id, bear?.price, price])
 
   if (error !== null) {
     return (
