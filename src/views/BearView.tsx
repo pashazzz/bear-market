@@ -28,7 +28,7 @@ const BearView = () => {
   const [origImg, setOrigImg] = useState<string>('')
   const [error, setError] = useState<IError | null>(null)
 
-  const [price, setPrice] = useState<number | undefined>(undefined)
+  const [price, setPrice] = useState<number | undefined | null>(undefined)
 
   useEffect(() => {
     getRequest(`/bears/${params.id}`)
@@ -62,7 +62,7 @@ const BearView = () => {
   }, [user.data?.id, bear])
 
   useEffect(() => {
-    if (price && bear?.price !== price) {
+    if (price !== undefined && bear?.price !== price) {
       postRequestWithAuth(`/bears/changePrice`, {id: bear?.id, price})
         .then(res => console.log(res))
     }
@@ -107,7 +107,7 @@ const BearView = () => {
           </div>
 
           <div className="bear-container-options">
-            <SetPriceBtn setPrice={setPrice} currentPrice={price}/>
+            <PriceButtons setPrice={setPrice} currentPrice={price}/>
             <div>Trade start: {tradeStartStr ? tradeStartStr : ''}</div>
             <div>Trade end: {tradeEndStr ? tradeEndStr : ''}</div>
           </div>
@@ -118,16 +118,21 @@ const BearView = () => {
 }
 
 interface PriceBtnProps {
-  currentPrice?: number,
-  setPrice: (val: number) => void
+  currentPrice?: number | null,
+  setPrice: (val: number | null) => void
 }
 
-const SetPriceBtn: FC<PriceBtnProps> = ({currentPrice, setPrice}) => {
+const PriceButtons: FC<PriceBtnProps> = ({currentPrice, setPrice}) => {
   const minPrice = 3
   const maxPrice = 10
 
   const [displayBtn, setDisplayBtn] = useState<boolean>(true)
   const [selectedPrice, setSelectedPrice] = useState<number>(currentPrice ?? minPrice)
+
+  const onWithdrawClick = () => {
+    if (window.confirm("If you withdraw the bear from sell it'll clear the price and sell period. Are you really want?"))
+    setPrice(null)
+  }
 
   if (displayBtn) {
     return (
@@ -136,6 +141,9 @@ const SetPriceBtn: FC<PriceBtnProps> = ({currentPrice, setPrice}) => {
         <button onClick={() => setDisplayBtn(false)}>
           {currentPrice ? 'Change price' : 'Set price'}
         </button>
+        {currentPrice && (
+          <button onClick={onWithdrawClick}>Withdraw from sell</button>
+        )}
       </div>
     )
   }

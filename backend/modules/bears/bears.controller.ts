@@ -25,9 +25,8 @@ router.get('/:id',
 
 interface IReqChangePrice {
   id: number,
-  price: number,
+  price: number | null,
 }
-
 router.post('/changePrice',
   passport.authenticate('jwt', {session: false}),
   async (req: Request<object, object, IReqChangePrice>, res: Response) => {
@@ -35,7 +34,7 @@ router.post('/changePrice',
     if (!bear || bear?.owner !== req.user.id) {
       return res.status(404).send('Bear with this id is not exists... For you?..')
     }
-    if (typeof req.body.price !== 'number') {
+    if (typeof req.body.price !== 'number' && req.body.price !== null) {
       return res.status(400).send('Bad request')
     }
     try {
