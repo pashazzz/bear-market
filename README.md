@@ -49,7 +49,10 @@ On server start it'll be seeded and all lifetime of app the changes will appear 
 ## TODO
 - Trade process:
   - assign the price for Bear card
-  - assign the period of trade (start accepting bets from yyyy.mm.dd and on the end of period trade with last largest proposition or first of equal)
+  - assign the period of trade
+    - start accepting bets from yyyy.mm.dd 
+    - on the end of period trade with last largest offer or first of equals
+    - or undefined end period, that owner can close in any time
   - send messages between users
   - send bet to Bear card
   - display last largest bet like the price
