@@ -47,4 +47,33 @@ router.post('/changePrice',
     res.status(200).json({changed: 'ok'})
   })
 
+interface IReqChangePeriod {
+  id: number,
+  tradeStart: string | null,
+  tradeEnd: string | null,
+}
+router.post('/changePeriod',
+  passport.authenticate('jwt', {session: false}),
+  async (req: Request<object, object, IReqChangePeriod>, res: Response) => {
+    const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
+    if (!bear || bear?.owner !== req.user.id) {
+      return res.status(404).send('Bear with this id is not exists... For you?..')
+    }
+    const start = req.body.tradeStart !== null
+      ? new Date(req.body.tradeStart).toISOString().split('T')[0] + ' 00:00:00'
+      : null
+    const end = req.body.tradeEnd !== null
+      ? new Date(req.body.tradeEnd).toISOString().split('T')[0] + ' 00:00:00'
+      : null
+
+      try {
+        await BearsModel.updateTradePeriod(req.body.id, start, end)
+      } catch(e) {
+        console.log(e)
+        return res.status(400).send('Bad request')
+      }
+
+    res.status(200).json({changed: 'ok'})
+  })
+
 export default router

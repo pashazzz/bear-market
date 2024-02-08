@@ -21,9 +21,18 @@ const updateField = (id: number, field: string, value: unknown):  Promise<void> 
   return sqlQuery(sql) as Promise<void>
 }
 
+const updateTradePeriod = (id: number, tradeStart: string | null, tradeEnd: string | null): Promise<void> => {
+  const sql = `UPDATE bears SET
+    tradeStart = ${tradeStart ? `"${tradeStart}"` : 'NULL'},
+    tradeEnd = ${tradeEnd ? `"${tradeEnd}"` : 'NULL'}
+    WHERE id = ${id}`
+  return sqlQuery(sql) as Promise<void>
+}
+
 export default {
   fetchBears,
   fetchBearById,
   fetchBearByUrl,
   updateField,
+  updateTradePeriod,
 }

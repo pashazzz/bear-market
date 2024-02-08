@@ -73,10 +73,31 @@ const BearView = () => {
 
   useEffect(() => {
     if (price !== undefined && bear?.price !== price) {
+      if (price === null) {
+        setTradeStart(undefined)
+        setTradeEnd(undefined)
+      }
       postRequestWithAuth(`/bears/changePrice`, {id: bear?.id, price})
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res)
+          
+        })
     }
   }, [bear?.id, bear?.price, price])
+
+  useEffect(() => {
+    if (!bear) {
+      return
+    }
+    postRequestWithAuth(`/bears/changePeriod`, {
+      id: bear.id,
+      tradeStart: tradeStart || null,
+      tradeEnd: tradeEnd || null,
+    })
+        .then(res => {
+          console.log(res)
+        })
+  }, [tradeStart, tradeEnd])
 
   if (error !== null) {
     return (

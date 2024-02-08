@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 
-import Button from '../Base/Button'
+import Button, { ButtonVariants } from '../Base/Button'
 import Input from '../Base/Input'
 
 
@@ -28,7 +28,11 @@ const PriceButtons: FC<PriceBtnProps> = ({currentPrice, setPrice}) => {
         <Button onClick={() => setDisplayBtn(false)}
           text={currentPrice ? 'Change price' : 'Set price'} />
         {currentPrice && (
-          <Button onClick={onWithdrawClick} text='Withdraw from sell' />
+          <Button
+            text='Withdraw from sell'
+            variant={ButtonVariants.danger}
+            onClick={onWithdrawClick}
+          />
         )}
       </div>
     )

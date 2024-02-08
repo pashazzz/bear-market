@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 
-import Button from '../Base/Button'
+import Button, { ButtonVariants } from '../Base/Button'
 import Input from '../Base/Input'
 
 interface TradePeriodProps {
@@ -18,18 +18,19 @@ const TradePeriod: FC<TradePeriodProps> = ({tradeStart, setTradeStart, tradeEnd,
   const [endDate, setEndDate] = useState<string>(tradeEnd?.toISOString()?.split('T')[0] || new Date().toISOString().split('T')[0])
 
   useEffect(() => {
-    console.log(tradeStart?.toISOString()?.split('T')[0])
     tradeStart !== undefined && setStartDate(tradeStart.toISOString()?.split('T')[0])
     tradeEnd !== undefined && setEndDate(tradeEnd.toISOString()?.split('T')[0])
   }, [tradeStart, tradeEnd])
 
-  const now = new Date()
-  const nowStr = `${now.getFullYear}-${now.getMonth}-${now.getDay}`
+  const today = new Date(new Date().toISOString().split('T')[0])
+  const nowStr = today.toISOString()?.split('T')[0]
+  const tradeStartStr = tradeStart?.toISOString()?.split('T')[0]
+  const minStart = (tradeStartStr && tradeStartStr > nowStr) ? nowStr : tradeStartStr
 
   const onSetStartDate = (val: string) => {
     let date = new Date(val)
     if (tradeStart && tradeStart > date) {
-      date = tradeStart
+      date = date < today ? tradeStart : date
     }
     if (tradeEnd && tradeEnd < date) {
       date = tradeEnd
@@ -53,9 +54,9 @@ const TradePeriod: FC<TradePeriodProps> = ({tradeStart, setTradeStart, tradeEnd,
 
   return (
     <>
-      {tradeStart ? (
-        <div>
-          <p>Trade start: {tradeStart.toLocaleDateString(navigator.language)}</p>
+      {tradeStart && (
+        <div className='bear-container-period-start'>
+          <p>Trade start: <b>{tradeStart.toLocaleDateString(navigator.language)}</b></p>
           {showStartPicker ? (
             <div className='bear-container-period'>
               <Input
@@ -63,7 +64,7 @@ const TradePeriod: FC<TradePeriodProps> = ({tradeStart, setTradeStart, tradeEnd,
                 value={startDate}
                 setValue={setStartDate}
                 className='bear-container-period-input'
-                min={tradeStart?.toISOString()?.split('T')[0] || nowStr}
+                min={minStart}
               />
               <Button text='Set date' onClick={() => onSetStartDate(startDate)} />
               <Button text='Cancel' onClick={() => {
@@ -75,35 +76,73 @@ const TradePeriod: FC<TradePeriodProps> = ({tradeStart, setTradeStart, tradeEnd,
               setShowEndPicker(false)
             }}/>
           )}
-          {tradeEnd && (
-            <div>
-              <p>Trade end: {tradeEnd.toLocaleDateString(navigator.language)}</p>
-              {showEndPicker ? (
-                <div className='bear-container-period'>
-                  <Input
-                    type='date'
-                    value={endDate}
-                    setValue={setEndDate}
-                    className='bear-container-period-input'
-                    min={tradeStart?.toISOString()?.split('T')[0] || nowStr}
-                  />
-                  <Button text='Set date' onClick={() => onSetEndDate(endDate)} />
-                  <Button text='Cancel' onClick={() => setShowEndPicker(false)} />
-                </div>
-              ) : (
-                  <Button text="Change end date" onClick={() => {
-                    setShowStartPicker(false)
-                    setShowEndPicker(true)
-                  }}/>
-              )}
-            </div>
-          )}
+          <Button
+            text="Remove start date (with end date too)"
+            variant={ButtonVariants.danger}
+            onClick={() => {
+              setTradeStart(undefined)
+              setTradeEnd(undefined)
+              setShowStartPicker(false)
+              setShowEndPicker(false)
+            }} />
         </div>
-        ) : (
-          <div>
-            <p>The trade is not started</p>
-            <Button text="Set trade period" onClick={() => {}}/>
-          </div>
+      )}
+
+      {tradeEnd ? (
+        <div>
+          <p>Trade end: <b>{tradeEnd.toLocaleDateString(navigator.language)}</b></p>
+          {showEndPicker ? (
+            <div className='bear-container-period'>
+              <Input
+                type='date'
+                value={endDate}
+                setValue={setEndDate}
+                className='bear-container-period-input'
+                min={tradeStart?.toISOString()?.split('T')[0] || nowStr}
+              />
+              <Button text='Set date' onClick={() => onSetEndDate(endDate)} />
+              <Button text='Cancel' onClick={() => setShowEndPicker(false)} />
+            </div>
+          ) : (
+              <Button text="Change end date" onClick={() => {
+                setShowStartPicker(false)
+                setShowEndPicker(true)
+              }}/>
+          )}
+          <Button
+            text="Remove end date"
+            variant={ButtonVariants.danger}
+            onClick={() => {
+              setTradeEnd(undefined)
+              setShowStartPicker(false)
+              setShowEndPicker(false)
+            }} />
+            <p>(without end date you can finish trading anytime)</p>
+        </div>
+      ) : (
+        <>
+        {tradeStart && (
+          <>
+            <Button text="Set end date" onClick={() => {
+              setTradeEnd(tradeStart)
+              setShowStartPicker(false)
+              setShowEndPicker(true)
+            }}/>
+            <p>(without end date you can finish trading anytime)</p>
+          </>
+        )}
+        </>
+      )}
+
+      {!tradeStart && !tradeEnd && (
+        <div>
+          <p>The trade is not started</p>
+          <Button text="Start trade or set the trade period" onClick={() => {
+            setTradeStart(new Date())
+            setShowStartPicker(true)
+            setShowEndPicker(true)
+          }}/>
+        </div>
         )}
     </>
   )
