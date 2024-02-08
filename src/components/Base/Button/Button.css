@@ -15,6 +15,13 @@
   font-size: 1.35em;
 }
 
+.button-danger {
+  border: 1px solid rgb(140, 10, 10);
+}
+.button-danger:hover {
+  border-color: red;
+}
+
 @media (prefers-color-scheme: light) {
   .button-wrapper button {
     color: #213547;

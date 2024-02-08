@@ -7,4 +7,8 @@ export enum ButtonSizes {
   LARGE = 'button-large',
 }
 
+export enum ButtonVariants {
+  danger = 'button-danger',
+}
+
 export default Button
