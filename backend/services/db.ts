@@ -1,8 +1,8 @@
 import { db } from "../../app"
 
-export function getOne(sql: string) {
+export function getOne(query: string) {
   return new Promise((resolve, reject) => {
-    db.get(sql, (err, row) => {
+    db.get(query, (err, row) => {
       if (err) {
         console.error(err.message)
         reject(undefined)
@@ -12,9 +12,9 @@ export function getOne(sql: string) {
   })
 }
 
-export function getAll(sql: string) {
+export function getAll(query: string) {
   return new Promise((resolve, reject) => {
-    db.all(sql, (err, rows) => {
+    db.all(query, (err, rows) => {
       if (err) {
         console.error(err.message)
         reject([])
@@ -24,9 +24,9 @@ export function getAll(sql: string) {
   })
 }
 
-export function modify(sql: string) {
+export function sqlQuery(query: string) {
   return new Promise<void>((resolve, reject) => {
-    db.run(sql, (err) => {
+    db.run(query, (err) => {
       if (err) {
         console.error(err.message)
         reject()
