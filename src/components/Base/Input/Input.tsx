@@ -8,8 +8,8 @@ interface Props {
   isFocused?: boolean
   value: string | number
   setValue: React.Dispatch<React.SetStateAction<string>>
-  min?: number
-  max?: number
+  min?: number | string
+  max?: number | string
 }
 
 const Input: React.FunctionComponent<Props> = (props: Props) => {
@@ -23,7 +23,7 @@ const Input: React.FunctionComponent<Props> = (props: Props) => {
 
   const onChangeVal = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value
-    if (props.type === 'number') {
+    if (props.type === 'number' && typeof props.min === 'number' && typeof props.max === 'number') {
       let num = Number(val)
       if (props.min && num < props.min) {
         num = props.min

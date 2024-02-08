@@ -6,6 +6,7 @@ import { useAppSelector } from "../helpers/reduxHooks"
 import './BearView.css'
 import Back from '../components/Base/Back'
 import PriceButtons from '../components/PriceButtons'
+import TradePeriod from '../components/TradePeriod'
 
 interface IError {
   caption: string,
@@ -30,13 +31,21 @@ const BearView = () => {
   const [error, setError] = useState<IError | null>(null)
 
   const [price, setPrice] = useState<number | undefined | null>(undefined)
+  const [tradeStart, setTradeStart] = useState<Date | undefined>(undefined)
+  const [tradeEnd, setTradeEnd] = useState<Date | undefined>(undefined)
 
   useEffect(() => {
     getRequest(`/bears/${params.id}`)
-      .then(data => {
-        setBear(data)
-        if (data.price) {
-          setPrice(data.price)
+      .then(bear => {
+        setBear(bear)
+        if (bear.price) {
+          setPrice(bear.price)
+        }
+        if (bear.tradeStart) {
+          setTradeStart(new Date(bear.tradeStart))
+        }
+        if (bear.tradeEnd) {
+          setTradeEnd(new Date(bear.tradeEnd))
         }
       })
       .catch(e => {
@@ -80,16 +89,6 @@ const BearView = () => {
   }
 
   const bearThumbUrl = `${apiUrl}/images/thumbs/${bear?.imgUrl}`
-  const tradeStart: Date | undefined = bear?.tradeStart ? new Date(bear?.tradeStart) : undefined
-  const tradeEnd: Date | undefined = bear?.tradeEnd ? new Date(bear?.tradeEnd) : undefined
-  let tradeStartStr: string | undefined
-  let tradeEndStr: string | undefined
-  if (tradeStart) {
-    tradeStartStr = tradeStart?.toLocaleDateString(navigator.language)
-  }
-  if (tradeStart && tradeEnd) {
-    tradeEndStr = tradeEnd?.toLocaleDateString(navigator.language)
-  }
 
   return (
     <div className="view bear-container">
@@ -109,8 +108,12 @@ const BearView = () => {
 
           <div className="bear-container-options">
             <PriceButtons setPrice={setPrice} currentPrice={price}/>
-            <div>Trade start: {tradeStartStr ? tradeStartStr : ''}</div>
-            <div>Trade end: {tradeEndStr ? tradeEndStr : ''}</div>
+            <TradePeriod
+              tradeStart={tradeStart}
+              setTradeStart={setTradeStart}
+              tradeEnd={tradeEnd}
+              setTradeEnd={setTradeEnd}
+            />
           </div>
         </div>
       }

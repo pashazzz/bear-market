@@ -6,7 +6,7 @@ import Input from '../Base/Input'
 
 interface PriceBtnProps {
   currentPrice?: number | null,
-  setPrice: (val: number | null) => void
+  setPrice: (val: number | null) => void,
 }
 
 const PriceButtons: FC<PriceBtnProps> = ({currentPrice, setPrice}) => {

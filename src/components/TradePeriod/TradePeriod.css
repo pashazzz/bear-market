@@ -1,4 +1,4 @@
-.bear-container .bear-container-price {
+.bear-container .bear-container-period {
   display: flex;
   gap: 1em;
   align-items: center;
@@ -7,8 +7,8 @@
   margin-bottom: 16px;
 }
 
-.bear-container .bear-container-price .bear-container-price-input {
-  width: 8rem;
+.bear-container .bear-container-period .bear-container-period-input {
+  width: 10rem;
   margin-left: 0;
   margin-right: 0;
 }
