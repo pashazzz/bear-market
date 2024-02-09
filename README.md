@@ -8,13 +8,13 @@
 
 ## Home
 - Most recent bears
-- Grouped by some criteria
+- Grouped by some criteria (price, ¿tags?)
 ## Customer page
 - Owned bears
 - Moderators can see new uploaded bears and accept/decline them; send explaining to user if it need
 ## Creating the bear
 - Upload image with pending for accept from admin ?or
-- ? Send request to mage.space or other free ai image generator with api or cheap OpenAI
+- ¿ Send request to mage.space or other free ai image generator with api or cheap OpenAI ?
   - On pending can be no more than 3 bears (or can be changed by admin)
 - Available period of sale
 - Additional accessories, icons on the corners (0 - 2 credits)
@@ -25,7 +25,6 @@
 - give bet for bear card
 - start conversation with owner
 ### for owner/admin
-- Adding discounts
 - Put it on sale with the common price (between 4 to 10 credits)
 - The bear image in original size (access to file only for owner)
 ## Admin side features
@@ -41,20 +40,36 @@
 - React, Vite
 - Node, ExpressJs
 - Sqlite
-
-## Using DB
+### Using DB
 To have the repeatable process, we will not use the common persistant DB but in-memory.
 On server start it'll be seeded and all lifetime of app the changes will appear there.
 
+## Features
+- resetable set
+- access to image by URL only to owners (using JWT)
+
 ## TODO
 - Trade process:
-  - assign the price for Bear card
-  - assign the period of trade
-    - start accepting bets from yyyy.mm.dd 
-    - on the end of period trade with last largest offer or first of equals
-    - or undefined end period, that owner can close in any time
-  - send messages between users
-  - send bet to Bear card
+  - close trade in any time
+  - bid to Bear card
+    - cancel last own bet if it last on the bet stack
   - display last largest bet like the price
+  - send messages between users
+  - worker that automatically checks on midnight (UTC) the ended trades and close them
 - Create registration process
 - Uploading new image for moderating
+  - accept/decline it by moderators/admins
+- Localization
+- Search by
+  - title
+  - description
+  - owner
+  - price
+- ¿ Tags ?
+  - predefined, moderated
+  - who can add new one?
+- Logging
+- Admin
+  - assign roles
+  - watch logs
+  - ban the users
