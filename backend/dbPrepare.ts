@@ -118,28 +118,36 @@ function seedData(db: sqlite3.Database) {
     refreshImgs()
   }
 
-  db.run(`CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL UNIQUE,
-    firstName TEXT,
-    lastName TEXT,
-    salt TEXT NOT NULL,
-    passwordHash TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    roles TEXT,
-    wallet NUMERIC,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL);`, () => db.run(prepareUsersString()))
-  
-  db.run(`CREATE TABLE bears (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    description TEXT,
-    imgUrl TEXT NOT NULL,
-    imgExt TEXT NOT NULL,
-    owner INTEGER NOT NULL,
-    price NUMERIC,
-    tradeStart DATETIME,
-    tradeEnd DATETIME,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL);`, () => db.run(prepareBearsString()))
+  db.serialize(() => {
+    db.run(`CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL UNIQUE,
+      firstName TEXT,
+      lastName TEXT,
+      salt TEXT NOT NULL,
+      passwordHash TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      roles TEXT,
+      wallet NUMERIC,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+      );`)
+    db.run(prepareUsersString())
+
+    db.run(`CREATE TABLE bears (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      description TEXT,
+      imgUrl TEXT NOT NULL,
+      imgExt TEXT NOT NULL,
+      owner INTEGER NOT NULL,
+      price NUMERIC,
+      tradeStart DATETIME,
+      tradeEnd DATETIME,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+      FOREIGN KEY (owner)
+        REFERENCES users (id)
+      );`)
+    db.run(prepareBearsString())
+  })
   
 }
