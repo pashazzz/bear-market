@@ -3,7 +3,7 @@ import { getAll, getOne, sqlQuery } from "../../services/db"
 import IBearEntity from "../../../interfaces/IBearEntity"
 
 const fetchBears = async (ofUserId?: number): Promise<IBearEntity[]> => {
-  const sql = `SELECT * FROM bears${ofUserId ? ` WHERE owner = ${ofUserId}` : ''}`
+  const sql = `SELECT * FROM bears${ofUserId ? ` WHERE ownerId = ${ofUserId}` : ''}`
   return getAll(sql) as Promise<IBearEntity[]>
 }
 

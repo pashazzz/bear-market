@@ -31,7 +31,7 @@ router.post('/changePrice',
   passport.authenticate('jwt', {session: false}),
   async (req: Request<object, object, IReqChangePrice>, res: Response) => {
     const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
-    if (!bear || bear?.owner !== req.user.id) {
+    if (!bear || bear?.ownerId !== req.user.id) {
       return res.status(404).send('Bear with this id is not exists... For you?..')
     }
     if (typeof req.body.price !== 'number' && req.body.price !== null) {
@@ -56,7 +56,7 @@ router.post('/changePeriod',
   passport.authenticate('jwt', {session: false}),
   async (req: Request<object, object, IReqChangePeriod>, res: Response) => {
     const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
-    if (!bear || bear?.owner !== req.user.id) {
+    if (!bear || bear?.ownerId !== req.user.id) {
       return res.status(404).send('Bear with this id is not exists... For you?..')
     }
     const start = req.body.tradeStart !== null

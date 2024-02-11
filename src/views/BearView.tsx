@@ -56,7 +56,7 @@ const BearView = () => {
 
   // original image can be accessed only for owner
   useEffect(() => {
-    if (user.data?.id !== undefined && user.data?.id === bear?.owner) {
+    if (user.data?.id !== undefined && user.data?.id === bear?.ownerId) {
       getRequestWithAuth(`/images/orig/${bear?.imgUrl}`, 'arraybuffer')
         .then(img => {
           // convert buffer to base64 image
@@ -119,7 +119,7 @@ const BearView = () => {
       {bear?.imgUrl && (
         <img className="bear-container-thumb-image" src={bearThumbUrl} />
       )}
-      {bear?.owner === user.data?.id && 
+      {bear?.ownerId === user.data?.id && 
         <div className="bear-container-owner-part">
           <div className="bear-container-img">
             <h3>Bear original image, that accessed only for owner</h3>

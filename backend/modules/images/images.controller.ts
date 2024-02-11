@@ -33,7 +33,7 @@ router.get('/thumbs/:name',
       if (req.user?.username === undefined) {
         return res.status(401).json({})
       }
-      if (req.user?.id !== bear?.owner) {
+      if (req.user?.id !== bear?.ownerId) {
         return res.status(403).json({})
       }
       if (bear === undefined) {
