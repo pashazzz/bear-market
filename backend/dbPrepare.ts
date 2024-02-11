@@ -148,6 +148,17 @@ function seedData(db: sqlite3.Database) {
         REFERENCES users (id)
       );`)
     db.run(prepareBearsString())
+
+    db.run(`CREATE TABLE bids (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      bearId INTEGER NOT NULL,
+      userId INTEGER NOT NULL,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+      FOREIGN KEY (bearId)
+        REFERENCES bears (id),
+      FOREIGN KEY (userId)
+        REFERENCES users (id)
+    );`)
   })
   
 }

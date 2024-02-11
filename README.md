@@ -22,7 +22,7 @@
 ### for all
 - only see the card details
 ### for logged in users
-- give bet for bear card
+- give bid for bear card
 - start conversation with owner
 ### for owner/admin
 - Put it on sale with the common price (between 4 to 10 credits)
@@ -52,9 +52,9 @@ On server start it'll be seeded and all lifetime of app the changes will appear 
 - Trade process:
   - close trade in any time
   - bid to Bear card
-    - cancel last own bet if it last on the bet stack
-  - display last largest bet like the price
-  - send messages between users
+    - cancel last own bid if it last on the bid stack
+  - display last largest bid like the price
+  - sending messages between users
   - worker that automatically checks on midnight (UTC) the ended trades and close them
 - Create registration process
 - Uploading new image for moderating
