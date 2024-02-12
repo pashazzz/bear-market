@@ -4,6 +4,7 @@ import passport from 'passport'
 import IBearEntity from '../../../interfaces/IBearEntity'
 import BearsModel from './bears.model'
 import usersMiddleware from '../users/users.middleware'
+import { compareDates } from '../../services/dates'
 
 const router = express.Router()
 
@@ -37,6 +38,9 @@ router.post('/changePrice',
     if (typeof req.body.price !== 'number' && req.body.price !== null) {
       return res.status(400).send('Bad request')
     }
+    if (bear.price === req.body.price) {
+      return res.status(200).json({notNeedToChange: true})
+    }
     try {
       await BearsModel.updateField(req.body.id, 'price', req.body.price)
     } catch(e) {
@@ -44,7 +48,7 @@ router.post('/changePrice',
       return res.status(400).send('Bad request')
     }
 
-    res.status(200).json({changed: 'ok'})
+    return res.status(200).json({changed: 'ok'})
   })
 
 interface IReqChangePeriod {
@@ -60,18 +64,22 @@ router.post('/changePeriod',
       return res.status(404).send('Bear with this id is not exists... For you?..')
     }
     const start = req.body.tradeStart !== null
-      ? new Date(req.body.tradeStart).toISOString().split('T')[0] + ' 00:00:00'
+      ? new Date(req.body.tradeStart).toISOString().split('T')[0] + 'T00:00:00Z'
       : null
     const end = req.body.tradeEnd !== null
-      ? new Date(req.body.tradeEnd).toISOString().split('T')[0] + ' 00:00:00'
+      ? new Date(req.body.tradeEnd).toISOString().split('T')[0] + 'T23:59:59Z'
       : null
 
-      try {
-        await BearsModel.updateTradePeriod(req.body.id, start, end)
-      } catch(e) {
-        console.log(e)
-        return res.status(400).send('Bad request')
-      }
+    if (compareDates(start, bear.tradeStart) && compareDates(end, bear.tradeEnd)) {
+      return res.status(200).json({notNeedToChange: true})
+    }
+
+    try {
+      await BearsModel.updateTradePeriod(req.body.id, start, end)
+    } catch(e) {
+      console.log(e)
+      return res.status(400).send('Bad request')
+    }
 
     res.status(200).json({changed: 'ok'})
   })

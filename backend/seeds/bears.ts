@@ -5,7 +5,7 @@ export const bears = [
     imgUrl: '9a488ca53c6846888f06bfe0872e2b13',
     imgExt: 'jpg',
     ownerId: 1,
-    createdAt: '2023-11-30 08:00:00',
+    createdAt: '2023-11-30T08:00:00Z',
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const bears = [
     imgExt: 'jpg',
     ownerId: 2,
     price: 8,
-    createdAt: '2023-12-01 08:12:00',
+    createdAt: '2023-12-01T08:12:00Z',
   },
   {
     id: 3,
@@ -23,7 +23,7 @@ export const bears = [
     imgUrl: '047b1663d55448dbac8ad8c0943a4501',
     imgExt: 'jpg',
     ownerId: 2,
-    createdAt: '2023-12-01 09:00:00',
+    createdAt: '2023-12-01T09:00:00Z',
   },
   {
     id: 4,
@@ -32,9 +32,9 @@ export const bears = [
     imgExt: 'png',
     ownerId: 3,
     price: 5,
-    tradeStart: '2023-12-01 09:00:00',
-    tradeEnd: '2040-12-01 00:00:00',
-    createdAt: '2023-12-01 09:00:00',
+    tradeStart: '2023-12-01T00:00:00Z',
+    tradeEnd: '2040-12-01T23:59:59Z',
+    createdAt: '2023-12-01T09:00:00Z',
   },
   {
     id: 5,
@@ -44,6 +44,6 @@ export const bears = [
     imgExt: 'jpg',
     ownerId: 3,
     price: 4,
-    createdAt: '2023-12-02 09:12:00',
+    createdAt: '2023-12-02T09:12:00Z',
   },
 ]
