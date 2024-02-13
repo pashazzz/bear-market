@@ -1,0 +1,16 @@
+.bear-container .bear-bids-container {
+  margin-top: 4rem;
+}
+
+.bear-container .bear-bids-buttons {
+  display: flex;
+  align-items: center;
+  align-content: flex-start;
+  justify-content: flex-start;
+}
+
+.bear-container .bear-bids-buttons .bear-bids-input {
+  width: 10rem;
+  margin-left: 0;
+  margin-right: 2rem;
+}

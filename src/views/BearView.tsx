@@ -6,6 +6,7 @@ import { useAppSelector } from "../helpers/reduxHooks"
 import './BearView.css'
 import Back from '../components/Base/Back'
 import BearViewOwnerPart from '../components/BearViewOwnerPart'
+import BearViewBidPart from '../components/BearViewBidPart'
 
 interface IError {
   caption: string,
@@ -49,19 +50,29 @@ const BearView = () => {
     )
   }
 
-  const bearThumbUrl = `${apiUrl}/images/thumbs/${bear?.imgUrl}`
+  if (!bear) {
+    return (
+      <div className="view bear-container">
+        <Back />
+      </div>
+    )
+  }
+
+  const bearThumbUrl = `${apiUrl}/images/thumbs/${bear.imgUrl}`
 
   return (
     <div className="view bear-container">
       <Back />
-      <h1>{bear?.title}</h1>
+      <h1>{bear.title}</h1>
       <h3>Bear thumbnail accessed to all</h3>
       {bear?.imgUrl && (
         <img className="bear-container-thumb-image" src={bearThumbUrl} />
       )}
-      {bear && bear.ownerId === user.data?.id
+      {bear.ownerId === user.data?.id
         ? <BearViewOwnerPart bear={bear} />
-        : <></>
+        : <>
+          {user.data && bear.tradeStart && <BearViewBidPart bear={bear}/>}
+          </>
       }
     </div>
   )
