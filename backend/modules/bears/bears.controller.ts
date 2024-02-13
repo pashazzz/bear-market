@@ -3,7 +3,7 @@ import passport from 'passport'
 
 import IBearEntity from '../../../interfaces/IBearEntity'
 import BearsModel from './bears.model'
-import usersMiddleware from '../users/users.middleware'
+import UsersMiddleware from '../users/users.middleware'
 import { compareDates } from '../../services/dates'
 
 const router = express.Router()
@@ -16,7 +16,7 @@ router.get('/',
   })
 
 router.get('/:id',
-  usersMiddleware.isAuthenticated,
+  UsersMiddleware.isAuthenticated,
   async (req: Request<{id: number}>, res: Response) => {
     const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.params.id))
     const status: number = bear === undefined ? 404 : 200
