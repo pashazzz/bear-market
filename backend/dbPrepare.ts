@@ -146,6 +146,7 @@ function seedData(db: sqlite3.Database) {
       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
       FOREIGN KEY (ownerId)
         REFERENCES users (id)
+        ON DELETE SET NULL
       );`)
     db.run(prepareBearsString())
 
@@ -153,11 +154,13 @@ function seedData(db: sqlite3.Database) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       bearId INTEGER NOT NULL,
       userId INTEGER NOT NULL,
+      value INTEGER NOT NULL,
       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
       FOREIGN KEY (bearId)
         REFERENCES bears (id),
       FOREIGN KEY (userId)
         REFERENCES users (id)
+        ON DELETE SET NULL
     );`)
   })
   

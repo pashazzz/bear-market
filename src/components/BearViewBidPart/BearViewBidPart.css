@@ -10,7 +10,11 @@
 }
 
 .bear-container .bear-bids-buttons .bear-bids-input {
-  width: 10rem;
+  width: 12rem;
   margin-left: 0;
   margin-right: 2rem;
+}
+
+.bear-container .bear-bids-container .bear-bids-message {
+  
 }
