@@ -2,7 +2,7 @@ import { getOne, sqlQuery } from "../../services/db"
 import IBidEntity from "../../../interfaces/IBidEntity"
 
 const getLastBid = (bearId: number) => {
-  const sql = `SELECT * FROM bids WHERE bearId = ${bearId} ORDER BY id LIMIT 1`
+  const sql = `SELECT * FROM bids WHERE bearId = ${bearId} ORDER BY id DESC LIMIT 1`
   return getOne(sql) as Promise<IBidEntity>
 }
 

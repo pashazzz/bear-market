@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react"
 import IBearEntity from "../../../interfaces/IBearEntity"
+import IBidEntity from "../../../interfaces/IBidEntity"
 import Input from "../Base/Input"
 import Button from "../Base/Button"
 import { getRequest, postRequestWithAuth } from "../../helpers/backendRequsts"
@@ -9,7 +10,7 @@ interface BearViewBidPartProps {
 }
 
 const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
-  const [lastBid, setLastBid] = useState<number>(0)
+  const [lastBid, setLastBid] = useState<IBidEntity|undefined>(undefined)
   const [bid, setBid] = useState<string>("")
   const [bidInputError, setBidInputError] = useState<string|undefined>("")
   const [bidMessage, setBidMessage] = useState<string>("")
@@ -26,7 +27,7 @@ const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     getRequest(`/bids/${bear.id}/lastBid`)
-      .then(bid => setLastBid(bid.lastBid))
+      .then(bid => setLastBid(bid))
       .catch(e => console.log(e))
   }, [bear.id])
 
@@ -34,15 +35,15 @@ const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
     // different locales can use dots or commas
     const bidNum = Number(bid.split('.')[0].split(',')[0])
     setBid(String(bidNum))
-    if (lastBid === 0 && bidNum <= (bear.price ?? 0) || bidNum <= lastBid) {
+    if (bidNum <= (bear.price ?? 0) || lastBid && bidNum <= lastBid.value) {
       return setBidInputError('Your bid should be more than last bid or price')
     }
     setBidInputError('')
 
     postRequestWithAuth(`/bids/${bear.id}`, {value: bidNum})
       .then(bid => {
-        setBidMessage('')
-        setLastBid(bid.value)
+        setLastBid(bid)
+        setBidMessage('Your bid has been accepted')
       })
       .catch(e => {
         console.log(e)
@@ -55,7 +56,7 @@ const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
   return(
     <div className="bear-bids-container">
       <div className="bear-bids-price">Original price: {bear.price} Credits</div>
-      <div className="bear-bids-last-bid">Last bid: {lastBid === 0 ? 'none' : `${lastBid} Credits`} </div>
+      <div className="bear-bids-last-bid">Last bid: {lastBid ? `${lastBid.value} Credits`: 'none'} </div>
       <div className="bear-bids-buttons">
         <Input
           className="bear-bids-input"
