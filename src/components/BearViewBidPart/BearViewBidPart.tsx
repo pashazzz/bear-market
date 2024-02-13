@@ -45,6 +45,7 @@ const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
           setValue={setBid}
         />
         <Button
+          className="bear-bids-set-button"
           text="Set bid"
           onClick={onSetBid}
         />
