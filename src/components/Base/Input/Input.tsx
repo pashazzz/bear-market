@@ -10,6 +10,7 @@ interface Props {
   setValue: React.Dispatch<React.SetStateAction<string>>
   min?: number | string
   max?: number | string
+  errorMessage?: string
 }
 
 const Input: React.FunctionComponent<Props> = (props: Props) => {
@@ -48,6 +49,9 @@ const Input: React.FunctionComponent<Props> = (props: Props) => {
         min={props.min}
         max={props.max}
       />
+      {props.errorMessage && (
+        <div className='input-error'>{props.errorMessage}</div>
+      )}
     </div>
   )
 }

@@ -12,3 +12,8 @@
   border-radius: 8px;
   font-size: large;
 }
+
+.input-wrapper .input-error {
+  color: rgb(140, 10, 10);
+  font-size: smaller;
+}
