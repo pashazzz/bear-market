@@ -1,15 +1,19 @@
 import { FC, useEffect, useState } from "react"
+import { useAppSelector } from '../../helpers/reduxHooks'
+
 import IBearEntity from "../../../interfaces/IBearEntity"
 import IBidEntity from "../../../interfaces/IBidEntity"
 import Input from "../Base/Input"
-import Button from "../Base/Button"
-import { getRequest, postRequestWithAuth } from "../../helpers/backendRequsts"
+import Button, { ButtonVariants } from "../Base/Button"
+import { deleteRequestWithAuth, getRequest, postRequestWithAuth } from "../../helpers/backendRequsts"
 
 interface BearViewBidPartProps {
   bear: IBearEntity
 }
 
 const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
+  const user = useAppSelector((state) => state.user)
+
   const [lastBid, setLastBid] = useState<IBidEntity|undefined>(undefined)
   const [bid, setBid] = useState<string>("")
   const [bidInputError, setBidInputError] = useState<string|undefined>("")
@@ -53,6 +57,23 @@ const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
       })
   }
 
+  const onWithdrawClick = () => {
+    if (!lastBid || !window.confirm("Do you really want to withdraw your last bid?")) {
+      return
+    }
+    deleteRequestWithAuth(`/bids/${lastBid.id}`)
+      .then(bid => {
+        setLastBid(bid)
+        setBidMessage('Your bid has been withdrawn')
+      })
+      .catch(e => {
+        console.log(e)
+        if (e.response?.data?.error) {
+          setBidMessage(e.response?.data?.error)
+        }
+      })
+  }
+
   return(
     <div className="bear-bids-container">
       <div className="bear-bids-price">Original price: {bear.price} Credits</div>
@@ -71,6 +92,12 @@ const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
           text="Set bid"
           onClick={onSetBid}
         />
+        {lastBid?.userId === user.data?.id && <Button
+            text='Withdraw my bid'
+            variant={ButtonVariants.danger}
+            onClick={onWithdrawClick}
+          />
+        }
       </div>
       <div className="bear-bids-message">{bidMessage}</div>
     </div>

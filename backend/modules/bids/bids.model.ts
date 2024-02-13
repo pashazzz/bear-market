@@ -17,7 +17,19 @@ const createBid = (bearId: number, userId: number, value: number) => {
     })
 }
 
+const fetchBidById = (id: number) => {
+  const sql = `SELECT * FROM bids WHERE id = ${id}`
+  return getOne(sql) as Promise<IBidEntity>
+}
+
+const deleteBid = (id: number) => {
+  const sql = `DELETE FROM bids WHERE id=${id}`
+  return sqlQuery(sql) as Promise<void>
+}
+
 export default {
   getLastBid,
   createBid,
+  fetchBidById,
+  deleteBid,
 }

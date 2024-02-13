@@ -50,4 +50,22 @@ router.post('/:bearId',
     res.status(200).json(bid)
   })
 
+router.delete('/:bidId',
+  passport.authenticate('jwt', {session: false}),
+  async (req: Request<{bidId: number}>, res: Response) => {
+    const bid = await BidsModel.fetchBidById(req.params.bidId)
+    if (!bid || bid.userId !== req.user.id) {
+      return res.status(404).json({error: "Bid not found"})
+    }
+    const bearId = bid.bearId
+    BidsModel.deleteBid(bid.id)
+
+    let lastBid: IBidEntity | IBidEntityNotOwner = await BidsModel.getLastBid(bearId)
+    if (lastBid && lastBid.userId !== req.user.id) {
+      lastBid = BidsService.sanitizeBidEntity(lastBid as IBidEntity)
+    }
+    
+    res.status(200).json(lastBid)
+  })
+
 export default router

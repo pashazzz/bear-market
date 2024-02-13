@@ -50,10 +50,10 @@ On server start it'll be seeded and all lifetime of app the changes will appear 
 
 ## TODO
 - Trade process:
+  - cancel trade
   - close trade in any time
-  - bid to Bear card
-    - cancel last own bid if it last on the bid stack
   - display last largest bid like the price
+  - update last bid automatically, using sockets
   - sending messages between users
   - worker that automatically checks on midnight (UTC) the ended trades and close them
 - Create registration process

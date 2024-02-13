@@ -7,6 +7,7 @@
   align-items: center;
   align-content: flex-start;
   justify-content: flex-start;
+  column-gap: 1rem;
 }
 
 .bear-container .bear-bids-buttons .bear-bids-input {
@@ -16,5 +17,5 @@
 }
 
 .bear-container .bear-bids-container .bear-bids-message {
-  
+  font-weight: bold;
 }
