@@ -1,4 +1,3 @@
-import { PassportStatic } from 'passport'
 import {Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 
 import fs from 'fs'
@@ -15,7 +14,7 @@ declare module "express-serve-static-core" {
 }
 
 // app.js will pass the global passport object here, and this function will configure it
-const passportInit = (passport: PassportStatic) => {
+const passportInit = (passport) => {
   const __dirname = path.dirname(fileURLToPath(import.meta.url))
   const pathToKey = path.join(__dirname, '..', 'utils', 'id_rsa_pub.pem')
 

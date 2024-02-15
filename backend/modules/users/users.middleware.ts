@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import passport from 'passport'
+import { IUserEntity } from '../../../interfaces/IUserEntity'
 
 const checkLoginFields = (req: Request, res: Response, next: NextFunction) => {
   const errors: string[] = []
@@ -26,7 +27,7 @@ const checkLoginFields = (req: Request, res: Response, next: NextFunction) => {
 // if it's not logged in user, we will write into req.user empty object
 // otherwise - User object
 const isAuthenticated = (req, res, next) => {
-  passport.authenticate('jwt', (err, user) => {
+  passport.authenticate('jwt', {}, (err: unknown, user?: IUserEntity) => {
     if (err) {
       return next(err)
     }
