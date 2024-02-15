@@ -4,7 +4,7 @@ import passport from 'passport'
 import IBearEntity from '../../../interfaces/IBearEntity'
 import BearsModel from './bears.model'
 import UsersMiddleware from '../users/users.middleware'
-import { compareDates } from '../../services/dates'
+import { isDatesSame } from '../../services/dates'
 
 const router = express.Router()
 
@@ -70,7 +70,7 @@ router.post('/changePeriod',
       ? new Date(req.body.tradeEnd).toISOString().split('T')[0] + 'T23:59:59Z'
       : null
 
-    if (compareDates(start, bear.tradeStart) && compareDates(end, bear.tradeEnd)) {
+    if (isDatesSame(start, bear.tradeStart) && isDatesSame(end, bear.tradeEnd)) {
       return res.status(200).json({notNeedToChange: true})
     }
 

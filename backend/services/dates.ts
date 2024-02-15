@@ -1,4 +1,4 @@
-export const compareDates = (d1: Date | string | null | undefined, d2: Date | string | null | undefined): boolean => {
+export const isDatesSame = (d1: Date | string | null | undefined, d2: Date | string | null | undefined): boolean => {
   if (d1 === d2) {
     return true
   }
