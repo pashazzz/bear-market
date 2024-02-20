@@ -8,17 +8,20 @@ import { bears } from './seeds/bears'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export function startDb ():sqlite3.Database {
+export function startDb (): sqlite3.Database {
   let dbAddr = ':memory:'
   if (process.env.DB_ADDR && process.env.DB_ADDR !== '') {
     dbAddr = process.env.DB_ADDR
+  }
+  if (process.env.NODE_ENV === 'test') {
+    dbAddr = '/tmp/test.sqlite'
   }
 
   let db: sqlite3.Database
   let needToSeed = true
 
   // callback on connect to DB
-  function onConnect(err): sqlite3.Database | undefined {
+  function onConnect(err: Error | null): sqlite3.Database | undefined {
     if (err) {
       console.error('---> DB not created', err?.message)
       return undefined
@@ -119,7 +122,7 @@ function seedData(db: sqlite3.Database) {
   }
 
   db.serialize(() => {
-    db.run(`CREATE TABLE users (
+    db.run(`CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL UNIQUE,
       firstName TEXT,
@@ -133,7 +136,7 @@ function seedData(db: sqlite3.Database) {
       );`)
     db.run(prepareUsersString())
 
-    db.run(`CREATE TABLE bears (
+    db.run(`CREATE TABLE IF NOT EXISTS bears (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
       description TEXT,
@@ -150,7 +153,7 @@ function seedData(db: sqlite3.Database) {
       );`)
     db.run(prepareBearsString())
 
-    db.run(`CREATE TABLE bids (
+    db.run(`CREATE TABLE IF NOT EXISTS bids (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       bearId INTEGER NOT NULL,
       userId INTEGER NOT NULL,
