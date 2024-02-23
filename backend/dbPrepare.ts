@@ -8,7 +8,7 @@ import { bears } from './seeds/bears'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export function startDb (): sqlite3.Database {
+export async function startDb (): Promise<sqlite3.Database> {
   let dbAddr = ':memory:'
   if (process.env.DB_ADDR && process.env.DB_ADDR !== '') {
     dbAddr = process.env.DB_ADDR
@@ -16,41 +16,42 @@ export function startDb (): sqlite3.Database {
   if (process.env.NODE_ENV === 'test') {
     dbAddr = '/tmp/test.sqlite'
   }
+  
+  return new Promise((resolve, reject) => {
+    let db: sqlite3.Database
+    let needToSeed = true
 
-  let db: sqlite3.Database
-  let needToSeed = true
-
-  // callback on connect to DB
-  function onConnect(err: Error | null): sqlite3.Database | undefined {
-    if (err) {
-      console.error('---> DB not created', err?.message)
-      return undefined
+    // callback on connect to DB
+    async function onConnect(err: Error | null) {
+      if (err) {
+        console.error('---> DB not created', err?.message)
+        reject(err)
+      }
+  
+      console.log(`---> Connected to the SQlite database (${dbAddr})`)
+      if (needToSeed) {
+        seedData(db)
+        console.log('---> DB seeded')
+      }
+      setTimeout(() => resolve(db), 10)
     }
-
-    console.log(`---> Connected to the SQlite database (${dbAddr})`)
-    if (needToSeed) {
-      seedData(db)
-      console.log('---> DB seeded')
+  
+    // in-memory: every time that server restart the DB state returns to initial
+    // filepath: on first time calling the file creates, seeded and after that used
+    if (dbAddr === ':memory:') {
+      db = new sqlite3.Database(dbAddr, onConnect)
+    } else {
+      const dbPath = path.join(__dirname + dbAddr)
+      needToSeed = false
+      // check and create DB file if it not exists
+      if (!fs.existsSync(dbPath)) {
+        fs.closeSync(fs.openSync(dbPath, 'w'))
+        needToSeed = true
+      }
+  
+      db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, onConnect)
     }
-  }
-
-  // in-memory: every time that server restart the DB state returns to initial
-  // filepath: on first time calling the file creates, seeded and after that used
-  if (dbAddr === ':memory:') {
-    db = new sqlite3.Database(dbAddr, onConnect)
-  } else {
-    const dbPath = path.join(__dirname + dbAddr)
-    needToSeed = false
-    // check and create DB file if it not exists
-    if (!fs.existsSync(dbPath)) {
-      fs.closeSync(fs.openSync(dbPath, 'w'))
-      needToSeed = true
-    }
-
-    db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, onConnect)
-  }
-
-  return db
+  })
 }
 
 function prepareUsersString(): string {

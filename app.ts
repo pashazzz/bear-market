@@ -19,7 +19,7 @@ dotenv.config()
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const app: Express = express()
-export const db = startDb()
+export const db = await startDb()
 
 app.use(express.json()) // for json responses
 app.use(express.urlencoded({ extended: true })) // for form requests
