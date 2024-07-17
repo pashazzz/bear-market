@@ -3,12 +3,20 @@ import { getAll, getOne, sqlQuery } from "../../services/db"
 import IBearEntity from "../../../interfaces/IBearEntity"
 
 const fetchBears = async (ofUserId?: number): Promise<IBearEntity[]> => {
-  const sql = `SELECT * FROM bears${ofUserId ? ` WHERE ownerId = ${ofUserId}` : ''}`
+  const sql = `SELECT bears.*, MAX(bids.value) as maxBid
+    FROM bears
+    LEFT JOIN bids ON bids.bearId = bears.id
+    ${ofUserId ? ` WHERE ownerId = ${ofUserId}` : ''}
+    GROUP BY bears.id`
   return getAll(sql) as Promise<IBearEntity[]>
 }
 
 const fetchBearById = (id: number): Promise<IBearEntity | undefined> => {
-  const sql = `SELECT * FROM bears WHERE id = ${id}`
+  const sql = `SELECT bears.*, MAX(bids.value) as maxBid
+    FROM bears
+    LEFT JOIN bids ON bids.bearId = bears.id
+    WHERE bears.id = ${id}
+    GROUP BY bears.id`
   return getOne(sql) as Promise<IBearEntity>
 }
 const fetchBearByUrl = (url: string): Promise<IBearEntity | undefined> => {

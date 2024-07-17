@@ -9,4 +9,5 @@ export default interface IBearEntity {
   tradeStart?: string,
   tradeEnd?: string,
   createdAt: string,
+  maxBid?: number,
 }

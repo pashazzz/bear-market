@@ -25,7 +25,17 @@ const BearCard = ({bearInfo}: IBearCard) => {
         </div>
         <div className='bear-card-bottom'>
           <div className='bear-card-createdAt'>{createdAt.toLocaleDateString(navigator.language)}</div>
-          { bearInfo.price && (<div className='bear-card-price'>{bearInfo.price} Cr</div>) }
+          { bearInfo.price && (
+            <div className='bear-card-price'>
+              {bearInfo.maxBid ? (
+                <div className="tooltip-wrapper">
+                  <div className='tooltip'>
+                    Last bid
+                  </div>
+                  {'\u0296' + bearInfo.maxBid} Cr
+                </div>) : bearInfo.price + ' Cr'}
+            </div>
+          ) }
           <div style={{clear: 'both'}} />
         </div>
       </div>
