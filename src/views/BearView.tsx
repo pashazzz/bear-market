@@ -71,7 +71,10 @@ const BearView = () => {
       {bear.ownerId === user.data?.id
         ? <BearViewOwnerPart bear={bear} />
         : <>
-          {user.data && bear.tradeStart && <BearViewBidPart bear={bear}/>}
+          {user.data &&
+            bear.price &&
+            bear.tradeStart &&
+            <BearViewBidPart bear={bear}/>}
           </>
       }
     </div>

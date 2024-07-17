@@ -29,10 +29,8 @@ const BearCard = ({bearInfo}: IBearCard) => {
             <div className='bear-card-price'>
               {bearInfo.maxBid ? (
                 <div className="tooltip-wrapper">
-                  <div className='tooltip'>
-                    Last bid
-                  </div>
-                  {'\u0296' + bearInfo.maxBid} Cr
+                  <div className='tooltip'>Last bid</div>
+                  {'\u0296' + bearInfo.maxBid + ' Cr'}
                 </div>) : bearInfo.price + ' Cr'}
             </div>
           ) }
