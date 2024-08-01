@@ -74,6 +74,9 @@ const BearViewOwnerPart: FC<BearViewOwnerPartProps> = ({ bear }) => {
 
       <div className="bear-container-options">
         <PriceButtons setPrice={setPrice} currentPrice={price}/>
+        { bear.maxBid &&
+          <h2>Last bid: {bear.maxBid}</h2>
+        }
         <TradePeriod
           tradeStart={tradeStart}
           setTradeStart={setTradeStart}

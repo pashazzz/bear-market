@@ -52,7 +52,6 @@ On server start it'll be seeded and all lifetime of app the changes will appear 
 - Trade process:
   - cancel trade
   - close trade in any time
-  - display last largest bid like the price
   - update last bid automatically, using sockets
   - sending messages between users
   - worker that automatically checks on midnight (UTC) the ended trades and close them
