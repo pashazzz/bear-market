@@ -31,6 +31,7 @@ interface IReqChangePrice {
 router.post('/changePrice',
   passport.authenticate('jwt', {session: false}),
   async (req: Request<object, object, IReqChangePrice>, res: Response) => {
+    // TODO: create middleware for checking ownership of the bear
     const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
     if (!bear || bear?.ownerId !== req.user.id) {
       return res.status(404).send('Bear with this id is not exists... For you?..')
@@ -59,6 +60,7 @@ interface IReqChangePeriod {
 router.post('/changePeriod',
   passport.authenticate('jwt', {session: false}),
   async (req: Request<object, object, IReqChangePeriod>, res: Response) => {
+    // TODO: create middleware for checking ownership of the bear
     const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
     if (!bear || bear?.ownerId !== req.user.id) {
       return res.status(404).send('Bear with this id is not exists... For you?..')
@@ -83,5 +85,28 @@ router.post('/changePeriod',
 
     res.status(200).json({changed: 'ok'})
   })
+
+  router.post('/closeTrade',
+    passport.authenticate('jwt', {session: false}),
+    async (req: Request<object, object, {id: number}>, res: Response) => {
+      // TODO: create middleware for checking ownership of the bear
+      const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
+      if (!bear || bear?.ownerId !== req.user.id) {
+        return res.status(404).send('Bear with this id is not exists... For you?..')
+      }
+
+      try {
+        await BearsModel.updateTradePeriod(req.body.id, null, null)
+      } catch(e) {
+        console.log(e)
+        return res.status(400).send('Bad request')
+      }
+      delete(bear.tradeStart)
+      delete(bear.tradeEnd)
+  
+      res.status(200).json(bear)
+    }
+
+  )
 
 export default router
