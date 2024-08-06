@@ -3,6 +3,7 @@ import passport from 'passport'
 
 import IBearEntity from '../../../interfaces/IBearEntity'
 import BearsModel from './bears.model'
+import BidsModel from '../bids/bids.model'
 import UsersMiddleware from '../users/users.middleware'
 import { isDatesSame } from '../../services/dates'
 
@@ -19,6 +20,8 @@ router.get('/:id',
   UsersMiddleware.isAuthenticated,
   async (req: Request<{id: number}>, res: Response) => {
     const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.params.id))
+    // don't show to owner who did last bid
+    delete(bear?.lastBidUserId)
     const status: number = bear === undefined ? 404 : 200
 
     res.status(status).json(bear)
@@ -42,6 +45,8 @@ router.post('/changePrice',
     if (bear.price === req.body.price) {
       return res.status(200).json({notNeedToChange: true})
     }
+    // don't show to owner who did last bid
+    delete(bear.lastBidUserId)
     try {
       await BearsModel.updateField(req.body.id, 'price', req.body.price)
     } catch(e) {
@@ -95,16 +100,36 @@ router.post('/changePeriod',
         return res.status(404).send('Bear with this id is not exists... For you?..')
       }
 
+      // delete trade period
       try {
         await BearsModel.updateTradePeriod(req.body.id, null, null)
       } catch(e) {
         console.log(e)
         return res.status(400).send('Bad request')
       }
-      delete(bear.tradeStart)
-      delete(bear.tradeEnd)
+
+      if (bear.maxBid && bear.lastBidUserId) {
+        // transfer credits
+        try {
+          await BidsModel.transferCreditsForBid(bear)
+        } catch (e) {
+          console.log(e)
+          res.status(400).send('Cannot transfer credits')
+        }
+
+        // change bear owner, if it have at least one bid
+        try {
+          await BearsModel.changeOwner(bear)
+        } catch(e) {
+          console.log(e)
+          res.status(400).send('Cannot change owner')
+        }
+      }
+
+      // delete all former bids
+      BidsModel.cleanBidsForBear(bear.id)
   
-      res.status(200).json(bear)
+      res.status(200).json({closed: true})
     }
 
   )

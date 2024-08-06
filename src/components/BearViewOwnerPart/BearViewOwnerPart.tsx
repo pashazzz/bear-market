@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react'
 import { getRequestWithAuth, postRequestWithAuth } from '../../helpers/backendRequsts'
 import { useAppSelector } from '../../helpers/reduxHooks'
 
+import Button, { ButtonVariants } from '../Base/Button'
 import PriceButtons from '../PriceButtons'
 import TradePeriod from '../TradePeriod'
 import IBearEntity from '../../../interfaces/IBearEntity'
@@ -64,6 +65,25 @@ const BearViewOwnerPart: FC<BearViewOwnerPartProps> = ({ bear }) => {
         })
   }, [bear, tradeStart, tradeEnd])
 
+  const closeCallbackAction = () => {
+    if (!window.confirm(`
+Do you really want to close the trade?
+
+!!!
+If it has at least one bid, the bear will be moved to a new owner
+!!!`)) {
+      return
+    }
+    postRequestWithAuth(`/bears/closeTrade`, {
+      id: bear.id,
+    })
+      .then(res => {
+        console.log(res)
+        window.location.reload()
+      })
+      .catch(err => console.log(err))
+  }
+
   return (
     <div className="bear-container-owner-part">
       <div className="bear-container-img">
@@ -82,6 +102,11 @@ const BearViewOwnerPart: FC<BearViewOwnerPartProps> = ({ bear }) => {
           setTradeStart={setTradeStart}
           tradeEnd={tradeEnd}
           setTradeEnd={setTradeEnd}
+        />
+        <Button
+          text='Close trade'
+          variant={ButtonVariants.danger}
+          onClick={closeCallbackAction}
         />
       </div>
     </div>
