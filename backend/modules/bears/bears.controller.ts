@@ -92,7 +92,6 @@ router.post('/closeTrade',
   passport.authenticate('jwt', {session: false}),
   BearsMiddleware.isUserOwner,
   async (req: Request<object, object, {id: number}>, res: Response) => {
-
     // delete trade period
     try {
       await BearsModel.updateTradePeriod(req.body.id, null, null)
@@ -123,6 +122,25 @@ router.post('/closeTrade',
     BidsModel.cleanBidsForBear(req.bear.id)
 
     res.status(200).json({closed: true})
+  }
+)
+
+router.post('/cancelTrade',
+  passport.authenticate('jwt', {session: false}),
+  BearsMiddleware.isUserOwner,
+  async (req: Request<object, object, {id: number}>, res: Response) => {
+    // delete trade period
+    try {
+      await BearsModel.updateTradePeriod(req.body.id, null, null)
+    } catch(e) {
+      console.log(e)
+      return res.status(400).send('Bad request')
+    }
+
+    // delete all former bids
+    BidsModel.cleanBidsForBear(req.bear.id)
+
+    res.status(200).json({canceled: true})
   }
 )
 

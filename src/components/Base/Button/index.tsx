@@ -8,6 +8,7 @@ export enum ButtonSizes {
 }
 
 export enum ButtonVariants {
+  warning = 'button-warning',
   danger = 'button-danger',
 }
 

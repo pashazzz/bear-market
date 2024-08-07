@@ -74,7 +74,25 @@ If it has at least one bid, the bear will be moved to a new owner
 !!!`)) {
       return
     }
+
     postRequestWithAuth(`/bears/closeTrade`, {
+      id: bear.id,
+    })
+      .then(res => {
+        console.log(res)
+        window.location.reload()
+      })
+      .catch(err => console.log(err))
+  }
+
+  const cancelCallbackAction = () => {
+    if (!window.confirm(`
+Do you really want to cancel the trade?
+It'll delete all bids for this bear.`)) {
+      return
+    }
+
+    postRequestWithAuth(`/bears/cancelTrade`, {
       id: bear.id,
     })
       .then(res => {
@@ -103,11 +121,18 @@ If it has at least one bid, the bear will be moved to a new owner
           tradeEnd={tradeEnd}
           setTradeEnd={setTradeEnd}
         />
-        <Button
-          text='Close trade'
-          variant={ButtonVariants.danger}
-          onClick={closeCallbackAction}
-        />
+        {tradeStart && ( <>
+          <Button
+            text='Close trade'
+            variant={ButtonVariants.danger}
+            onClick={closeCallbackAction}
+          />
+          <Button
+            text='Cancel trade'
+            variant={ButtonVariants.warning}
+            onClick={cancelCallbackAction}
+          />
+        </> )}
       </div>
     </div>
   )
