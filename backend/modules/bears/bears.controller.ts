@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express'
 import passport from 'passport'
 
 import IBearEntity from '../../../interfaces/IBearEntity'
+import BearsMiddleware from './bears.middleware'
 import BearsModel from './bears.model'
 import BidsModel from '../bids/bids.model'
 import UsersMiddleware from '../users/users.middleware'
@@ -64,12 +65,8 @@ interface IReqChangePeriod {
 }
 router.post('/changePeriod',
   passport.authenticate('jwt', {session: false}),
+  BearsMiddleware.isUserOwner,
   async (req: Request<object, object, IReqChangePeriod>, res: Response) => {
-    // TODO: create middleware for checking ownership of the bear
-    const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
-    if (!bear || bear?.ownerId !== req.user.id) {
-      return res.status(404).send('Bear with this id is not exists... For you?..')
-    }
     const start = req.body.tradeStart !== null
       ? new Date(req.body.tradeStart).toISOString().split('T')[0] + 'T00:00:00Z'
       : null
@@ -77,7 +74,7 @@ router.post('/changePeriod',
       ? new Date(req.body.tradeEnd).toISOString().split('T')[0] + 'T23:59:59Z'
       : null
 
-    if (isDatesSame(start, bear.tradeStart) && isDatesSame(end, bear.tradeEnd)) {
+    if (isDatesSame(start, req.bear.tradeStart) && isDatesSame(end, req.bear.tradeEnd)) {
       return res.status(200).json({notNeedToChange: true})
     }
 
@@ -93,12 +90,8 @@ router.post('/changePeriod',
 
 router.post('/closeTrade',
   passport.authenticate('jwt', {session: false}),
+  BearsMiddleware.isUserOwner,
   async (req: Request<object, object, {id: number}>, res: Response) => {
-    // TODO: create middleware for checking ownership of the bear
-    const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
-    if (!bear || bear?.ownerId !== req.user.id) {
-      return res.status(404).send('Bear with this id is not exists... For you?..')
-    }
 
     // delete trade period
     try {
@@ -108,10 +101,10 @@ router.post('/closeTrade',
       return res.status(400).send('Bad request')
     }
 
-    if (bear.maxBid && bear.lastBidUserId) {
+    if (req.bear.maxBid && req.bear.lastBidUserId) {
       // transfer credits
       try {
-        await BidsModel.transferCreditsForBid(bear)
+        await BidsModel.transferCreditsForBid(req.bear)
       } catch (e) {
         console.log(e)
         res.status(400).send('Cannot transfer credits')
@@ -119,7 +112,7 @@ router.post('/closeTrade',
 
       // change bear owner, if it have at least one bid
       try {
-        await BearsModel.changeOwner(bear)
+        await BearsModel.changeOwner(req.bear)
       } catch(e) {
         console.log(e)
         res.status(400).send('Cannot change owner')
@@ -127,11 +120,10 @@ router.post('/closeTrade',
     }
 
     // delete all former bids
-    BidsModel.cleanBidsForBear(bear.id)
+    BidsModel.cleanBidsForBear(req.bear.id)
 
     res.status(200).json({closed: true})
   }
-
 )
 
 router.all('/*', (req: Request, res: Response) => {
