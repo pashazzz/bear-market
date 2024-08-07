@@ -91,47 +91,51 @@ router.post('/changePeriod',
     res.status(200).json({changed: 'ok'})
   })
 
-  router.post('/closeTrade',
-    passport.authenticate('jwt', {session: false}),
-    async (req: Request<object, object, {id: number}>, res: Response) => {
-      // TODO: create middleware for checking ownership of the bear
-      const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
-      if (!bear || bear?.ownerId !== req.user.id) {
-        return res.status(404).send('Bear with this id is not exists... For you?..')
-      }
-
-      // delete trade period
-      try {
-        await BearsModel.updateTradePeriod(req.body.id, null, null)
-      } catch(e) {
-        console.log(e)
-        return res.status(400).send('Bad request')
-      }
-
-      if (bear.maxBid && bear.lastBidUserId) {
-        // transfer credits
-        try {
-          await BidsModel.transferCreditsForBid(bear)
-        } catch (e) {
-          console.log(e)
-          res.status(400).send('Cannot transfer credits')
-        }
-
-        // change bear owner, if it have at least one bid
-        try {
-          await BearsModel.changeOwner(bear)
-        } catch(e) {
-          console.log(e)
-          res.status(400).send('Cannot change owner')
-        }
-      }
-
-      // delete all former bids
-      BidsModel.cleanBidsForBear(bear.id)
-  
-      res.status(200).json({closed: true})
+router.post('/closeTrade',
+  passport.authenticate('jwt', {session: false}),
+  async (req: Request<object, object, {id: number}>, res: Response) => {
+    // TODO: create middleware for checking ownership of the bear
+    const bear: IBearEntity | undefined = await BearsModel.fetchBearById(Number(req.body.id))
+    if (!bear || bear?.ownerId !== req.user.id) {
+      return res.status(404).send('Bear with this id is not exists... For you?..')
     }
 
-  )
+    // delete trade period
+    try {
+      await BearsModel.updateTradePeriod(req.body.id, null, null)
+    } catch(e) {
+      console.log(e)
+      return res.status(400).send('Bad request')
+    }
+
+    if (bear.maxBid && bear.lastBidUserId) {
+      // transfer credits
+      try {
+        await BidsModel.transferCreditsForBid(bear)
+      } catch (e) {
+        console.log(e)
+        res.status(400).send('Cannot transfer credits')
+      }
+
+      // change bear owner, if it have at least one bid
+      try {
+        await BearsModel.changeOwner(bear)
+      } catch(e) {
+        console.log(e)
+        res.status(400).send('Cannot change owner')
+      }
+    }
+
+    // delete all former bids
+    BidsModel.cleanBidsForBear(bear.id)
+
+    res.status(200).json({closed: true})
+  }
+
+)
+
+router.all('/*', (req: Request, res: Response) => {
+  return res.status(404).send('api request not found')
+})
 
 export default router

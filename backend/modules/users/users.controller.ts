@@ -54,4 +54,8 @@ router.all('/test',
   }
 )
 
+router.all('/*', (req: Request, res: Response) => {
+  return res.status(404).send('api request not found')
+})
+
 export default router
