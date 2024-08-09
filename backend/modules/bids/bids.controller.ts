@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import passport from 'passport'
 
+import { wsServer } from '../../../server'
 import BidsModel from './bids.model'
 import BidsService from './bids.service'
 import BearsModel from '../bears/bears.model'
@@ -10,7 +11,6 @@ import IBidEntity from '../../../interfaces/IBidEntity'
 import { IBidEntityNotOwner } from './bids.service'
 
 const router = express.Router()
-
 
 router.get('/:bearId/lastBid',
   UsersMiddleware.isAuthenticated,
@@ -46,6 +46,8 @@ router.post('/:bearId',
     }
 
     const bid = await BidsModel.createBid(req.params.bearId, req.user.id, req.body.value)
+
+    wsServer.emit(`${req.params.bearId}addedBid`, req.body.value)
     
     res.status(200).json(bid)
   })

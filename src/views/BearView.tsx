@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { io, Socket } from 'socket.io-client'
+
 import IBearEntity from '../../interfaces/IBearEntity'
 import { getRequest } from '../helpers/backendRequsts'
 import { useAppSelector } from "../helpers/reduxHooks"
@@ -28,6 +30,17 @@ const BearView = () => {
 
   const [bear, setBear] = useState<IBearEntity | null>(null) 
   const [error, setError] = useState<IError | null>(null)
+  const [socket, setSocket] = useState<Socket>()
+
+  useEffect(() => {
+    if (bear && bear.ownerId === user.data?.id && !socket) {
+      const s: Socket = io(`http://${import.meta.env.VITE_SERVER_HOST}:${import.meta.env.VITE_SERVER_PORT}/`)
+      s.on(`${bear.id}addedBid`, (bid) => {
+        setBear({...bear, maxBid: bid})
+      })
+      setSocket(s)
+    }
+  }, [bear, socket, user.data?.id])
 
   useEffect(() => {
     getRequest(`/bears/${params.id}`)

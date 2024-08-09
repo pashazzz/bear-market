@@ -22,7 +22,7 @@ const BearViewOwnerPart: FC<BearViewOwnerPartProps> = ({ bear }) => {
   const [tradeEnd, setTradeEnd] = useState<Date | undefined>(bear.tradeEnd
     ? new Date(bear.tradeEnd)
     : undefined)
-  
+
   // original image can be accessed only for owner
   useEffect(() => {
     if (user.data?.id !== undefined && user.data?.id === bear.ownerId) {
