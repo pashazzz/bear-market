@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { io, Socket } from 'socket.io-client'
+import { Manager, Socket } from 'socket.io-client'
 
 import IBearEntity from '../../interfaces/IBearEntity'
 import { getRequest } from '../helpers/backendRequsts'
@@ -34,8 +34,12 @@ const BearView = () => {
 
   useEffect(() => {
     if (bear && bear.ownerId === user.data?.id && !socket) {
-      const s: Socket = io(`http://${import.meta.env.VITE_SERVER_HOST}:${import.meta.env.VITE_SERVER_PORT}/`)
-      s.on(`${bear.id}addedBid`, (bid) => {
+      const manager = new Manager(`http://${import.meta.env.VITE_SERVER_HOST}:${import.meta.env.VITE_SERVER_PORT}`, {
+        reconnectionDelay: 5000,
+        reconnectionAttempts: 20,
+      })
+      const s: Socket = manager.socket('/')
+      s.on(`${bear.id}changedBid`, (bid) => {
         setBear({...bear, maxBid: bid})
       })
       setSocket(s)

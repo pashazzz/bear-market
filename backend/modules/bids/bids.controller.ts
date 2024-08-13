@@ -47,7 +47,7 @@ router.post('/:bearId',
 
     const bid = await BidsModel.createBid(req.params.bearId, req.user.id, req.body.value)
 
-    wsServer.emit(`${req.params.bearId}addedBid`, req.body.value)
+    wsServer.emit(`${req.params.bearId}changedBid`, req.body.value)
     
     res.status(200).json(bid)
   })
