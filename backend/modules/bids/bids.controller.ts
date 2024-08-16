@@ -60,11 +60,19 @@ router.delete('/:bidId',
       return res.status(404).json({error: "Bid not found"})
     }
     const bearId = bid.bearId
+    const deletedValue = bid.value
     BidsModel.deleteBid(bid.id)
 
     let lastBid: IBidEntity | IBidEntityNotOwner = await BidsModel.getLastBid(bearId)
     if (lastBid && lastBid.userId !== req.user.id) {
       lastBid = BidsService.sanitizeBidEntity(lastBid as IBidEntity)
+    }
+
+    const bear = await BearsModel.fetchBearById(bearId)
+    if (!bear?.maxBid) {
+      wsServer.emit(`${bearId}changedBid`, null)
+    } else if (deletedValue > bear.maxBid) {
+      wsServer.emit(`${bearId}changedBid`, bear.maxBid)
     }
     
     res.status(200).json(lastBid)
