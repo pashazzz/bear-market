@@ -1,3 +1,5 @@
+import { Manager, Socket } from 'socket.io-client'
+
 import './ProfileView.css'
 import { useEffect, useState } from "react"
 import { getRequestWithAuth } from "../helpers/backendRequsts"
@@ -8,6 +10,30 @@ import BearCard from "../components/BearCard"
 const ProfileView = () => {
   const user = useAppSelector((state) => state.user)
   const [bears, setBears] = useState<IBearEntity[]>([])
+  const [socket, setSocket] = useState<Socket>()
+
+  useEffect(() => {
+    const updateBears = (i: number, bid: number) => {
+      const updBears = [...bears]
+      updBears[i].maxBid = bid
+      setBears(updBears)
+    }
+
+    if (bears.length > 0 && !socket) {
+      const manager = new Manager(`http://${import.meta.env.VITE_SERVER_HOST}:${import.meta.env.VITE_SERVER_PORT}`, {
+        reconnectionDelay: 5000,
+        reconnectionAttempts: 20,
+      })
+      const s: Socket = manager.socket('/')
+      bears.forEach((bear, i) => {
+        s.on(`${bear.id}changedBid`, bid => {
+          updateBears(i, bid)
+        })
+      })
+
+      setSocket(s)
+    }
+  }, [bears, socket])
 
   useEffect(() => {
     getRequestWithAuth(`/users/${user.data?.username}/bears`)
