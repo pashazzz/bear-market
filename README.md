@@ -47,10 +47,10 @@ On server start it'll be seeded and all lifetime of app the changes will appear 
 ## Features
 - resetable set
 - access to image by URL only to owners (using JWT)
+- using websockets for immediately update bids
 
 ## TODO
 - Trade process:
-  - update last bid automatically, using sockets
   - sending messages between users
   - worker that automatically checks on midnight (UTC) the ended trades and close them
 - Create registration process
