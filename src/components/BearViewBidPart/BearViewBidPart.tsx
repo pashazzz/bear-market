@@ -18,22 +18,51 @@ const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
   const [bid, setBid] = useState<string>("")
   const [bidInputError, setBidInputError] = useState<string|undefined>("")
   const [bidMessage, setBidMessage] = useState<string>("")
+  const [lastBidStr, setLastBidStr] = useState<string>("")
+  const [tradeStart, setTradeStart] = useState<Date|null>(bear.tradeStart ? new Date(bear.tradeStart) : null)
+  const [tradeEnd, setTradeEnd] = useState<Date|null>(bear.tradeEnd ? new Date(bear.tradeEnd) : null)
 
-  const now = new Date()
-  const tradeStart = bear.tradeStart ? new Date(bear.tradeStart) : null
-  const tradeEnd = bear.tradeEnd ? new Date(bear.tradeEnd) : null
-  const isTradeEnd = tradeEnd && tradeEnd.getTime() < now.getTime()
-
-  if (!tradeStart || isTradeEnd || tradeStart && tradeStart.getTime() > now.getTime()) {
-    return <></>
-  }
+  const isTradeEnd = tradeEnd && tradeEnd.getTime() < new Date().getTime()
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
+    if (!tradeStart || isTradeEnd || tradeStart && tradeStart.getTime() > new Date().getTime()) {
+      return
+    }
+
     getRequest(`/bids/${bear.id}/lastBid`)
       .then(bid => setLastBid(bid))
       .catch(e => console.log(e))
-  }, [bear.id])
+  }, [])
+
+  useEffect(() => {
+    if (!tradeStart || isTradeEnd || tradeStart && tradeStart.getTime() > new Date().getTime()) {
+      return
+    }
+
+    setLastBidStr(bear.maxBid ? bear.maxBid + ' Credits' : 'none')
+
+    if (!tradeStart && bear.tradeStart) {
+      setTradeStart(new Date(bear.tradeStart))
+    } else if (!tradeStart && !bear.tradeStart) {
+      setTradeStart(null)
+    } else if (bear.tradeStart && tradeStart.toString() !== bear.tradeStart) {
+      setTradeStart(new Date(bear.tradeStart))
+    }
+
+    if (!tradeEnd && bear.tradeEnd) {
+      setTradeEnd(new Date(bear.tradeEnd))
+    } else if (!tradeEnd && !bear.tradeEnd) {
+      setTradeEnd(null)
+    } else if (bear.tradeEnd && tradeEnd && tradeEnd.toString() !== bear.tradeEnd) {
+      setTradeEnd(new Date(bear.tradeEnd))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bear])
+
+  if (!tradeStart || isTradeEnd || tradeStart && tradeStart.getTime() > new Date().getTime()) {
+    return <></>
+  }
 
   const onSetBid = () => {
     // different locales can use dots or commas
@@ -77,7 +106,7 @@ const BearViewBidPart: FC<BearViewBidPartProps> = ({ bear }) => {
   return(
     <div className="bear-bids-container">
       <div className="bear-bids-price">Original price: {bear.price} Credits</div>
-      <div className="bear-bids-last-bid">Last bid: {lastBid ? `${lastBid.value} Credits`: 'none'} </div>
+      <div className="bear-bids-last-bid">Last bid: {lastBidStr} </div>
       <div className="bear-bids-buttons">
         <Input
           className="bear-bids-input"

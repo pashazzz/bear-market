@@ -33,7 +33,7 @@ const BearView = () => {
   const [socket, setSocket] = useState<Socket>()
 
   useEffect(() => {
-    if (bear && bear.ownerId === user.data?.id && !socket) {
+    if (bear && !socket) {
       const manager = new Manager(`http://${import.meta.env.VITE_SERVER_HOST}:${import.meta.env.VITE_SERVER_PORT}`, {
         reconnectionDelay: 5000,
         reconnectionAttempts: 20,
@@ -87,12 +87,10 @@ const BearView = () => {
       )}
       {bear.ownerId === user.data?.id
         ? <BearViewOwnerPart bear={bear} />
-        : <>
-          {user.data &&
-            bear.price &&
-            bear.tradeStart &&
-            <BearViewBidPart bear={bear}/>}
-          </>
+        : user.data &&
+          bear.price &&
+          bear.tradeStart &&
+          <BearViewBidPart bear={bear}/>
       }
     </div>
   )
